@@ -7,7 +7,7 @@ import { useFormik } from "formik";
 import { addProductValidationSchema } from "../../../helper/FormValidation";
 import CustomAlert from "../../../util/CustomAlert";
 
-const AddProduct = () => {
+const AddProduct = (): JSX.Element => {
     const token: string | null = window.localStorage.getItem("token");
     const _TOKEN = JSON.parse(token ?? 'null');
 
@@ -29,11 +29,14 @@ const AddProduct = () => {
             productTitle: "",
             offer: false,
             offerPercentage: "",
+            is_discount_code: false,
+            discountCode: "",
             productImages: [],
             productDescription: "",
+            productKeyPoints: [""],
             price: "",
+            productQuantity: "",
             availability: "Available",
-            visibility: "Show",
             category: ""
         },
         validationSchema: addProductValidationSchema,
@@ -43,21 +46,24 @@ const AddProduct = () => {
             formData.append("productTitle", values.productTitle);
             formData.append("offer", values.offer.toString());
             formData.append("offerPercentage", values.offerPercentage);
-
+            formData.append("is_discount_code", values.is_discount_code.toString());
+            formData.append("discountCode", values.discountCode);
             values.productImages.forEach((image: File) => {
                 formData.append("productImages", image);
             });
-
             formData.append("productDescription", values.productDescription);
+            values.productKeyPoints.forEach((item: string) => {
+                formData.append("productKeyPoints", item);
+            });
+            formData.append("productQuantity", values.productQuantity);
             formData.append("price", values.price);
             formData.append("availability", values.availability);
-            formData.append("visibility", values.visibility);
             formData.append("category", values.category);
+
             // console.log(values);
             dispatch(addProduct({ data: formData, header }));
         }
     });
-
 
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.currentTarget.files) {
@@ -81,6 +87,40 @@ const AddProduct = () => {
         setImagePreviews(updatedPreviews);
         setFieldValue("productImages", updatedImages);
     };
+
+    const addKeypointField = () => {
+        const updatedKeyPoints = [...values.productKeyPoints, ""];
+        setFieldValue("productKeyPoints", updatedKeyPoints);
+    };
+
+    const removeKeypointField = (index: number) => {
+        const updatedKeyPoints = values.productKeyPoints.filter((_, i) => i !== index);
+        setFieldValue("productKeyPoints", updatedKeyPoints);
+    };
+
+    const handleKeypointChange = (index: number, value: string) => {
+        const updatedKeyPoints = values.productKeyPoints.map((kp, i) => (i === index ? value : kp));
+        setFieldValue("productKeyPoints", updatedKeyPoints);
+    };
+
+    const keypointFields = values.productKeyPoints.map((keypoint, index) => (
+        <div key={index} className="col-12">
+            <div className="input-group mb-3">
+                <input
+                    type="text"
+                    className="form-control"
+                    placeholder="Enter Key Point"
+                    value={keypoint}
+                    onChange={(e) => handleKeypointChange(index, e.target.value)}
+                />
+                <button
+                    className="btn btn-outline-danger"
+                    type="button"
+                    onClick={() => removeKeypointField(index)}
+                ><i className='bx bx-trash'></i></button>
+            </div>
+        </div>
+    ));
 
     useEffect(() => {
         dispatch(getAllCategory({ header }));
@@ -151,6 +191,7 @@ const AddProduct = () => {
                                         <div className="card shadow-none bg-light border">
                                             <div className="row g-3 card-body">
 
+                                                {/* Product title */}
                                                 <div className="col-12">
                                                     <label className="form-label">Product title</label>
                                                     <input
@@ -167,6 +208,7 @@ const AddProduct = () => {
                                                     {touched.productTitle && errors.productTitle && <div className="text-danger" style={{ fontSize: "13px" }}>*{errors.productTitle}</div>}
                                                 </div>
 
+                                                {/* Offer */}
                                                 <div className="col-12 col-lg-6">
                                                     <label className="form-label" htmlFor="offer">Offer</label>
                                                     <select
@@ -183,6 +225,7 @@ const AddProduct = () => {
                                                     {touched.offer && errors.offer && <div className="text-danger" style={{ fontSize: "13px" }}>*{errors.offer}</div>}
                                                 </div>
 
+                                                {/* Offer Percentage */}
                                                 <div className="col-12 col-lg-6">
                                                     <label className="form-label" htmlFor="offerPercentage">Offer Percentage</label>
                                                     <input
@@ -200,6 +243,42 @@ const AddProduct = () => {
                                                     {touched.offerPercentage && errors.offerPercentage && <div className="text-danger" style={{ fontSize: "13px" }}>*{errors.offerPercentage}</div>}
                                                 </div>
 
+                                                {/* Apply Discount Code */}
+                                                <div className="col-12 col-lg-6">
+                                                    <label className="form-label" htmlFor="is_discount_code">Apply Discount Code</label>
+                                                    <select
+                                                        id="is_discount_code"
+                                                        className="form-select"
+                                                        name="is_discount_code"
+                                                        value={values.is_discount_code.toString()}
+                                                        onChange={handleChange}
+                                                        onBlur={handleBlur}
+                                                    >
+                                                        <option value="true">Yes</option>
+                                                        <option value="false">No</option>
+                                                    </select>
+                                                    {touched.is_discount_code && errors.is_discount_code && <div className="text-danger" style={{ fontSize: "13px" }}>*{errors.is_discount_code}</div>}
+                                                </div>
+
+                                                {/* Discount Code */}
+                                                <div className="col-12 col-lg-6">
+                                                    <label className="form-label" htmlFor="discountCode">Discount Code</label>
+                                                    <input
+                                                        id="discountCode"
+                                                        type="text"
+                                                        className="form-control"
+                                                        placeholder="Enter discount code"
+                                                        name="discountCode"
+                                                        value={values.discountCode}
+                                                        onChange={handleChange}
+                                                        onBlur={handleBlur}
+                                                        disabled={values.is_discount_code === false}
+                                                        style={{ border: touched.discountCode && errors.discountCode ? "1px solid red" : "" }}
+                                                    />
+                                                    {touched.discountCode && errors.discountCode && <div className="text-danger" style={{ fontSize: "13px" }}>*{errors.discountCode}</div>}
+                                                </div>
+
+                                                {/* Product Images */}
                                                 <div className="col-12">
                                                     <label className="form-label" htmlFor="productImages">Product Images</label>
                                                     <input
@@ -242,6 +321,7 @@ const AddProduct = () => {
                                                     {touched.productImages && errors.productImages && <div className="text-danger" style={{ fontSize: "13px" }}>*{errors.productImages}</div>}
                                                 </div>
 
+                                                {/* Product description */}
                                                 <div className="col-12">
                                                     <label className="form-label" htmlFor="productDescription">Product description</label>
                                                     <textarea
@@ -255,6 +335,18 @@ const AddProduct = () => {
                                                         onBlur={handleBlur}
                                                     ></textarea>
                                                 </div>
+
+                                                {/* Product Hightlights */}
+                                                <div className="col-12 col-lg-12">
+                                                    <label className="form-label">Product Hightlights</label>
+                                                    {keypointFields}
+                                                    <div className="text-center">
+                                                        <button type="button" className="btn btn-outline-success btn-sm" onClick={addKeypointField}>
+                                                            <i className='bx bx-plus fs-6'></i> Add Input
+                                                        </button>
+                                                    </div>
+                                                </div>
+
                                             </div>
                                         </div>
 
@@ -273,6 +365,23 @@ const AddProduct = () => {
                                         <div className="card shadow-none bg-light border">
                                             <div className="card-body">
                                                 <div className="row g-3">
+
+                                                    {/* Product Quantity */}
+                                                    <div className="col-12">
+                                                        <label className="form-label">Product Quantity</label>
+                                                        <input
+                                                            type="text"
+                                                            id="productQuantity"
+                                                            className="form-control"
+                                                            placeholder="Enter product quantity"
+                                                            name="productQuantity"
+                                                            value={values.productQuantity}
+                                                            onChange={handleChange}
+                                                            onBlur={handleBlur}
+                                                            style={{ border: touched.productQuantity && errors.productQuantity ? "1px solid red" : "" }}
+                                                        />
+                                                        {touched.productQuantity && errors.productQuantity && <div className="text-danger" style={{ fontSize: "13px" }}>*{errors.productQuantity}</div>}
+                                                    </div>
 
                                                     {/* Price */}
                                                     <div className="col-12">
@@ -306,23 +415,6 @@ const AddProduct = () => {
                                                             <option value="Unavailable">Unavailable</option>
                                                         </select>
                                                         {touched.availability && errors.availability && <div className="text-danger" style={{ fontSize: "13px" }}>*{errors.availability}</div>}
-                                                    </div>
-
-                                                    {/* Product Visibility */}
-                                                    <div className="col-12">
-                                                        <label className="form-label" htmlFor="visibility">Product Visibility</label>
-                                                        <select
-                                                            id="visibility"
-                                                            className="form-select"
-                                                            name="visibility"
-                                                            value={values.visibility}
-                                                            onChange={handleChange}
-                                                            onBlur={handleBlur}
-                                                        >
-                                                            <option value="Show">Show</option>
-                                                            <option value="Hide">Hide</option>
-                                                        </select>
-                                                        {touched.visibility && errors.visibility && <div className="text-danger" style={{ fontSize: "13px" }}>*{errors.visibility}</div>}
                                                     </div>
 
                                                     {/* Categories */}

@@ -58,8 +58,6 @@ const Categories = (): JSX.Element => {
         setCategoryData(category_data?.data);
     }, [category_data]);
 
-    console.log(userData);
-
 
     return (
         <>
