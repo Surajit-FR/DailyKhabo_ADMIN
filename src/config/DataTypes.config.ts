@@ -11,6 +11,7 @@ export type CustomHeadersType = {
 // Form input type
 export type formValuesType = {
     category_name?: string;
+    categoryImage?: string;
     category_desc?: string;
     productTitle?: string;
     offer?: string;
@@ -150,6 +151,7 @@ export type CategoryListType = {
     _id: string;
     categoryID: string;
     category_name: string;
+    categoryImage: string;
     category_desc: string;
     is_delete: boolean,
     createdAt: string;
@@ -199,6 +201,7 @@ export type Search_props_type = {
 // Common response type
 export interface ApiResponse<T> {
     productImages: Array<string>;
+    categoryImage: string;
     productTitle: ReactNode;
     price(price: any): unknown;
     category_name: ReactNode;

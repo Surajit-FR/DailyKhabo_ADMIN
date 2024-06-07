@@ -8,8 +8,8 @@ export const loginValidationSchema = Yup.object({
 
 // category validation
 export const categoryValidationSchema = Yup.object({
-    category_name: Yup.string()
-        .required('Category name is required'),
+    category_name: Yup.string().required('Category name is required'),
+    categoryImage: Yup.mixed().required("Category image is required"),
 });
 
 // add product validation

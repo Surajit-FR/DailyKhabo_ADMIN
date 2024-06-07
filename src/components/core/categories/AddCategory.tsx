@@ -3,7 +3,7 @@ import { categoryValidationSchema } from "../../../helper/FormValidation";
 import CustomAlert from "../../../util/CustomAlert";
 import { useDispatch, useSelector } from "react-redux";
 import { addCategory, clearCategoryRespData, clearError } from "../../../services/slices/UtilitySlice";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { REACT_APP_PRODUCT_PER_PAGE } from "../../../config/App.config";
 
 type addCategory_props = {
@@ -29,15 +29,30 @@ const AddCategory = ({ pageNumber }: addCategory_props): JSX.Element => {
     // dataPerPage
     const dataPerPage = REACT_APP_PRODUCT_PER_PAGE;
 
+    // State variable to hold the URL of the selected image
+    const [imagePreview, setImagePreview] = useState<string | null>(null);
+
     // taking form values
-    const { values, errors, touched, handleBlur, handleChange, handleSubmit, isValid, resetForm } = useFormik({
+    const { values, errors, touched, handleBlur, handleChange, handleSubmit, isValid, resetForm, setFieldValue } = useFormik({
         initialValues: {
             category_name: "",
+            categoryImage: null,
             category_desc: "",
         },
         validationSchema: categoryValidationSchema,
         onSubmit: (values) => {
-            dispatch(addCategory({ data: values, page: (pageNumber + 1), pageSize: dataPerPage, header }));
+            // Create a new FormData object
+            const formData = new FormData();
+
+            formData.append("category_name", values.category_name);
+
+            if (values.categoryImage !== null) {
+                formData.append("categoryImage", values.categoryImage);
+            }
+            formData.append("category_desc", values.category_desc);
+
+            // console.log({ values });
+            dispatch(addCategory({ data: formData, page: (pageNumber + 1), pageSize: dataPerPage, header }));
         }
     });
 
@@ -49,9 +64,21 @@ const AddCategory = ({ pageNumber }: addCategory_props): JSX.Element => {
         return null;
     };
 
+    // Function to handle file input change and display image preview
+    const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.currentTarget.files && e.currentTarget.files.length > 0) {
+            const file = e.currentTarget.files[0];
+            // Set the image preview URL
+            setImagePreview(URL.createObjectURL(file));
+            // Set the selected image file to formik field
+            setFieldValue("categoryImage", file);
+        }
+    };
+
     useEffect(() => {
         if (category_resp_data?.success) {
             resetForm();
+            setImagePreview(null);
         }
     }, [category_resp_data, resetForm]);
 
@@ -82,6 +109,34 @@ const AddCategory = ({ pageNumber }: addCategory_props): JSX.Element => {
                                 />
                             </div>
                             {touched?.category_name && renderError(errors?.category_name)}
+
+                            {/* Category Image */}
+                            <div className="col-12">
+                                <label className="form-label" htmlFor="categoryImage">Category Image</label>
+                                <input
+
+                                    id="categoryImage"
+                                    className="form-control"
+                                    type="file"
+                                    onChange={handleImageChange}
+                                    onBlur={handleBlur}
+                                />
+                                {/* Display image preview */}
+                                {imagePreview &&
+                                    <img
+                                        src={imagePreview}
+                                        alt="Category Preview"
+                                        style={{
+                                            maxWidth: "100%",
+                                            maxHeight: "380px",
+                                            margin: "10px 0",
+                                            border: "1px solid black",
+                                            objectFit: "contain"
+                                        }}
+                                    />
+                                }
+                                {touched.categoryImage && errors.categoryImage && <div className="text-danger" style={{ fontSize: "13px" }}>*{errors.categoryImage}</div>}
+                            </div>
 
                             {/* Category Description */}
                             <div className="col-12">
