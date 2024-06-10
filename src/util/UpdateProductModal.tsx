@@ -56,8 +56,8 @@ const UpdateProductModal = ({ modalId, pageNumber, dataPerPage, debouncedSearchQ
             formData.append("is_discount_code", values.is_discount_code.toString());
             formData.append("discountCode", values.discountCode);
             formData.append("productDescription", values.productDescription);
-            values.productKeyPoints.forEach((item: string) => {
-                formData.append("productKeyPoints", item);
+            values.productKeyPoints.forEach((point, index) => {
+                formData.append(`productKeyPoints[${index}]`, point);
             });
             formData.append("productQuantity", values.productQuantity);
             formData.append("price", values.price);
@@ -70,7 +70,7 @@ const UpdateProductModal = ({ modalId, pageNumber, dataPerPage, debouncedSearchQ
                     formData.append("productImages", image);
                 }
             });
-            
+
             // console.log(values);
             dispatch(updateProduct({
                 data: formData,

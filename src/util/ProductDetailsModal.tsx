@@ -101,19 +101,26 @@ const ProductDetailsModal = ({ modalId, productID, header }: ProductDetailsModal
                                     </h5>
                                 </div>
 
+                                {/* Product Final Price */}
+                                <div className="col-md-6">
+                                    <h5 style={{ fontSize: "16px" }}>Final Price:
+                                        <span className="mx-2" style={{ fontWeight: "normal", fontSize: "14px" }}>{products_details_data?.data?.finalPrice ? `₹${Number(products_details_data?.data?.finalPrice).toFixed(2)}` : "N/A"}</span>
+                                    </h5>
+                                </div>
+
+                                {/* Discount Code */}
+                                <div className="col-md-6">
+                                    <h5 style={{ fontSize: "16px" }}>Discount Code:
+                                        <span className="mx-2" style={{ fontWeight: "normal", fontSize: "14px" }}>{products_details_data?.data?.discountCode ? products_details_data?.data?.discountCode : "N/A"}</span>
+                                    </h5>
+                                </div>
+
                                 {/* Product Availability */}
                                 <div className="col-md-6">
                                     <h5 style={{ fontSize: "16px" }}>Availability
                                         <span className="mx-2">
                                             {products_details_data?.data?.availability ? <i className="bi bi-check2-square text-success"></i> : <i className="bi bi-x-square text-danger"></i>}
                                         </span>
-                                    </h5>
-                                </div>
-
-                                {/* Product Visibility */}
-                                <div className="col-md-6">
-                                    <h5 style={{ fontSize: "16px" }}>Visibility
-                                        <span className="mx-2">{products_details_data?.data?.visibility ? <i className="bi bi-check2-square text-success"></i> : <i className="bi bi-x-square text-danger"></i>}</span>
                                     </h5>
                                 </div>
 
@@ -127,11 +134,32 @@ const ProductDetailsModal = ({ modalId, productID, header }: ProductDetailsModal
                                 <hr />
                                 {/* Product Description */}
                                 <div className="col-md-12">
-                                    <h5 style={{ fontSize: "16px" }}>Product Description:
+                                    <h5 style={{ fontSize: "16px" }}>Description:
                                         <span className="mx-2" style={{ fontWeight: "normal", fontSize: "14px" }}>
                                             {products_details_data?.data?.productDescription ? products_details_data?.data?.productDescription : "N/A"}
                                         </span>
                                     </h5>
+                                </div>
+
+                                <hr />
+                                {/* Product Highlights */}
+                                <div className="col-md-12">
+                                    <h5 style={{ fontSize: "16px" }}>Highlights:</h5>
+                                    <ul>
+                                        {
+                                            products_details_data?.data?.productKeyPoints?.length ?
+                                                products_details_data?.data?.productKeyPoints?.map((item: any, index: any) => {
+                                                    return (
+                                                        <li key={index}>
+                                                            <span style={{ fontWeight: "normal", fontSize: "14px" }}>
+                                                                {item}
+                                                            </span>
+                                                        </li>
+                                                    )
+                                                })
+                                                : "N/A"
+                                        }
+                                    </ul>
                                 </div>
                             </div>
                         </div>
