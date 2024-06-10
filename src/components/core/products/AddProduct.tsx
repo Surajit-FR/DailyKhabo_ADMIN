@@ -33,7 +33,7 @@ const AddProduct = (): JSX.Element => {
             discountCode: "",
             productImages: [],
             productDescription: "",
-            productKeyPoints: [""],
+            productKeyPoints: [''],
             price: "",
             productQuantity: "",
             availability: "Available",
@@ -52,8 +52,8 @@ const AddProduct = (): JSX.Element => {
                 formData.append("productImages", image);
             });
             formData.append("productDescription", values.productDescription);
-            values.productKeyPoints.forEach((item: string) => {
-                formData.append("productKeyPoints", item);
+            values.productKeyPoints.forEach((point, index) => {
+                formData.append(`productKeyPoints[${index}]`, point);
             });
             formData.append("productQuantity", values.productQuantity);
             formData.append("price", values.price);
