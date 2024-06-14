@@ -43,14 +43,19 @@ const Sidebar = (): JSX.Element => {
                     </li>
 
                     {/* Pricing */}
-                    {/* <li className="menu-label">Pricing</li>
+                    <li className="menu-label">Pricing</li>
                     <li>
-                        <Link to="/manage/pricing">
+                        <Link to="#" className="has-arrow">
                             <div className="parent-icon"><i className="bi bi-tags-fill"></i>
                             </div>
-                            <div className="menu-title">Pricing Tables</div>
+                            <div className="menu-title">Manage Coupons</div>
                         </Link>
-                    </li> */}
+                        <ul>
+                            <li>
+                                <Link to="/coupons"><i className="bi bi-circle"></i>Coupon</Link>
+                            </li>
+                        </ul>
+                    </li>
                 </ul>
                 {/* <!--end navigation--> */}
             </aside>

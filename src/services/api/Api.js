@@ -50,3 +50,9 @@ export const GETALLPRODUCTS = (params = {}, header) => {
 export const GETPRODUCTDETAILS = (product_id, header) => API.get(`/admin/api/get/product/details/${product_id}`, header);
 // Delete products
 export const DELETEPRODUCT = (product_id, header) => API.delete(`/admin/api/delete/product/${product_id}`, header);
+// Create coupon
+export const CREATECOUPON = (data, header) => API.post("/admin/api/create/coupons", data, header);
+// Get all coupons
+export const GETALLCOUPONS = (page, pageSize, header) => API.get(`/admin/api/get/all/coupons?page=${page}&pageSize=${pageSize}`, header);
+// Delete coupons
+export const DELETECOUPONS = (selectedIDs, header) => API.post("/admin/api/delete/coupons", selectedIDs, header);

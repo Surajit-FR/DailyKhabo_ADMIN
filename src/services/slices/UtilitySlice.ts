@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { ADDCATEGORY, ADDPRODUCT, DELETECATEGORY, DELETEPRODUCT, GETALLCATEGORIES, GETALLPRODUCTS, GETPRODUCTDETAILS, UPDATECATEGORY, UPDATEPRODUCT } from "../api/Api";
+import { ADDCATEGORY, ADDPRODUCT, CREATECOUPON, DELETECATEGORY, DELETECOUPONS, DELETEPRODUCT, GETALLCATEGORIES, GETALLCOUPONS, GETALLPRODUCTS, GETPRODUCTDETAILS, UPDATECATEGORY, UPDATEPRODUCT } from "../api/Api";
 import { CategoryOperationResponse, ProductOperationResponse, FetchAllCategoryResponse, FetchAllProductResponse, FormValues_Props } from "../../config/DataTypes.config";
 
 // addCategory thunk
@@ -134,6 +134,48 @@ export const deleteProduct = createAsyncThunk("/admin/api/delete/product", async
     }
 });
 
+// createCoupon thunk
+export const createCoupon = createAsyncThunk("/admin/api/create/coupons", async ({ data, page, pageSize, header }: FormValues_Props, { rejectWithValue, dispatch }): Promise<any> => {
+    try {
+        const response = await CREATECOUPON(data, header);
+        const result: any = response?.data;
+        if (result?.success) {
+            dispatch(getAllCoupons({ page, pageSize, header }));
+            return result
+        };
+    } catch (exc: any) {
+        const err: any = rejectWithValue(exc.response.data);
+        return err;
+    }
+});
+
+// getAllCoupons thunk
+export const getAllCoupons = createAsyncThunk("/admin/api/get/all/coupons", async ({ page, pageSize, header }: FormValues_Props, { rejectWithValue }): Promise<any> => {
+    try {
+        const response = await GETALLCOUPONS(page, pageSize, header);
+        const result: any = response?.data;
+        if (result?.success) return result;
+    } catch (exc: any) {
+        const err: any = rejectWithValue(exc.response.data);
+        return err;
+    }
+});
+
+// deleteCoupons thunk
+export const deleteCoupons = createAsyncThunk("/admin/api/delete/coupons", async ({ selectedIDs, page, pageSize, header }: FormValues_Props, { rejectWithValue, dispatch }): Promise<any> => {
+    try {
+        const response = await DELETECOUPONS(selectedIDs, header);
+        const result: any = response?.data;
+        if (result?.success) {
+            dispatch(getAllCoupons({ page, pageSize, header }));
+            return result
+        };
+    } catch (exc: any) {
+        const err: any = rejectWithValue(exc.response.data);
+        return err;
+    }
+});
+
 const UtilitySlice = createSlice({
     name: "utilitySlice",
     initialState: {
@@ -151,6 +193,11 @@ const UtilitySlice = createSlice({
         products_data: [],
         products_details_data: [],
         del_error: null,
+
+        // Coupon States
+        coupon_data: [],
+        add_coupon_resp_data: null,
+        coupon_del_resp: null,
 
         // Common States
         utility_loading: false,
@@ -184,6 +231,13 @@ const UtilitySlice = createSlice({
         },
         clearDelError(state) {
             state.del_error = null;
+        },
+
+        clearAddCouponRespData(state) {
+            state.add_coupon_resp_data = null;
+        },
+        clearCouponDelResp(state) {
+            state.coupon_del_resp = null;
         },
 
         clearError(state) {
@@ -325,6 +379,51 @@ const UtilitySlice = createSlice({
             const err: any | null = payload;
             state.del_error = err;
         })
+
+        // createCoupon states
+        builder.addCase(createCoupon.pending, (state) => {
+            state.utility_loading = true;
+        })
+        builder.addCase(createCoupon.fulfilled, (state, { payload }) => {
+            state.utility_loading = false;
+            const add_coupon_resp_data: any = payload;
+            state.add_coupon_resp_data = add_coupon_resp_data;
+        })
+        builder.addCase(createCoupon.rejected, (state, { payload }) => {
+            state.utility_loading = false;
+            const err: any | null = payload;
+            state.error = err;
+        })
+
+        // getAllCoupons states
+        builder.addCase(getAllCoupons.pending, (state) => {
+            state.utility_loading = true;
+        })
+        builder.addCase(getAllCoupons.fulfilled, (state, { payload }) => {
+            state.utility_loading = false;
+            const coupon_data: any = payload;
+            state.coupon_data = coupon_data;
+        })
+        builder.addCase(getAllCoupons.rejected, (state, { payload }) => {
+            state.utility_loading = false;
+            const err: any | null = payload;
+            state.error = err;
+        })
+
+        // deleteCoupons states
+        builder.addCase(deleteCoupons.pending, (state) => {
+            state.utility_loading = true;
+        })
+        builder.addCase(deleteCoupons.fulfilled, (state, { payload }) => {
+            state.utility_loading = false;
+            const coupon_del_resp: any = payload;
+            state.coupon_del_resp = coupon_del_resp;
+        })
+        builder.addCase(deleteCoupons.rejected, (state, { payload }) => {
+            state.utility_loading = false;
+            const err: any | null = payload;
+            state.del_error = err;
+        })
     }
 })
 
@@ -340,6 +439,9 @@ export const {
     clearProductDelResp,
     clearProductsDetailsData,
     clearDelError,
+
+    clearAddCouponRespData,
+    clearCouponDelResp,
 
     clearError,
 } = UtilitySlice.actions;

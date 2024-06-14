@@ -37,3 +37,10 @@ export const addProductValidationSchema = Yup.object({
     category: Yup.string().required("Category selection is required"),
     // productKeyPoints: Yup.array().of(Yup.mixed().required("Product highlight is required")).min(1, "At least one key point is required")
 });
+
+// coupon validation
+export const couponValidationSchema = Yup.object({
+    couponNumber: Yup.number().required("Number is required").positive("Number must be a positive number"),
+    discount_amount: Yup.number().required("Discount amount is required").positive("Discount amount must be a positive number"),
+    expiry_date: Yup.date().required("Expiry date is required").min(new Date(), "Expiry date must be in the future")
+});

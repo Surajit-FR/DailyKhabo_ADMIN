@@ -23,6 +23,9 @@ export type formValuesType = {
     visibility?: string;
     categories?: string;
     web_theme?: string;
+    couponNumber?: number;
+    discount_amount?: number;
+    expiry_date?: string;
 };
 
 // Form value props type
@@ -38,6 +41,7 @@ export type FormValues_Props = {
     navigate?: any;
     category_id?: string | undefined;
     product_id?: string | undefined;
+    selectedIDs?: Array<string>;
 };
 
 // Add category success resp type
@@ -157,6 +161,15 @@ export type CategoryListType = {
     createdAt: string;
     updatedAt: string;
     __v: string;
+};
+
+// Coupon list type
+export type CouponListType = {
+    _id: string;
+    discount_coupon: string;
+    discount_amount: number;
+    is_expired: boolean;
+    expiry_date: string;
 };
 
 // Promise return type FetchAllCategoryResponse

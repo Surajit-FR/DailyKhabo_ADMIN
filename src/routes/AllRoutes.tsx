@@ -3,6 +3,7 @@ import Dashboard from '../pages/others/Dashboard';
 import Products from '../pages/others/Products';
 import AddProduct from '../components/core/products/AddProduct';
 import Categories from '../pages/others/Categories';
+import Coupons from '../pages/others/Coupons';
 
 const AllRoutes = (): JSX.Element => {
     return (
@@ -12,6 +13,7 @@ const AllRoutes = (): JSX.Element => {
                 <Route path='/add/product' element={<AddProduct />} />
                 <Route path='/products' element={<Products />} />
                 <Route path='/product/categories' element={<Categories />} />
+                <Route path='/coupons' element={<Coupons />} />
             </Routes>
         </>
     );
