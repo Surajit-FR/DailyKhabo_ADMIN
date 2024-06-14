@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { CouponListType, PermissionCheckResult } from '../../../config/DataTypes.config';
+import { CouponListType } from '../../../config/DataTypes.config';
 import { formatDateTime } from '../../../helper/FormatDateTime';
 
 // Styled Components for the custom checkbox

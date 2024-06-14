@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { CouponListType, PermissionCheckResult } from '../../../config/DataTypes.config';
+import { CouponListType } from '../../../config/DataTypes.config';
 import Pagination from '../../../util/Pagination';
 import Coupon from './Coupon';
 import CustomAlert from '../../../util/CustomAlert';

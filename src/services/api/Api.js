@@ -53,6 +53,9 @@ export const DELETEPRODUCT = (product_id, header) => API.delete(`/admin/api/dele
 // Create coupon
 export const CREATECOUPON = (data, header) => API.post("/admin/api/create/coupons", data, header);
 // Get all coupons
-export const GETALLCOUPONS = (page, pageSize, header) => API.get(`/admin/api/get/all/coupons?page=${page}&pageSize=${pageSize}`, header);
+export const GETALLCOUPONS = (params = {}, header) => {
+    const queryParams = new URLSearchParams(params).toString();
+    return API.get(`/admin/api/get/all/coupons?${queryParams}`, header)
+};
 // Delete coupons
 export const DELETECOUPONS = (selectedIDs, header) => API.post("/admin/api/delete/coupons", selectedIDs, header);

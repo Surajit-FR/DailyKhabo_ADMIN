@@ -42,6 +42,13 @@ export type FormValues_Props = {
     category_id?: string | undefined;
     product_id?: string | undefined;
     selectedIDs?: Array<string>;
+    isExpired?: string;
+    params?: {
+        page?: number;
+        pageSize?: number;
+        isExpired?: string;
+        header?: CustomHeadersType;
+    }
 };
 
 // Add category success resp type

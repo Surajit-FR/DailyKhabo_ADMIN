@@ -28,6 +28,7 @@ const Coupons = (): JSX.Element => {
     const [pageNumber, setPageNumber] = useState<number>(0);
     const [couponData, setCouponData] = useState<CouponListType[]>([]);
     const [selectedCoupons, setSelectedCoupons] = useState<string[]>([]);
+    const [filter, setFilter] = useState<string>("");
 
     const dataPerPage = REACT_APP_CATEGORY_PER_PAGE;
     const pageCount = coupon_data?.totalPages;
@@ -36,16 +37,12 @@ const Coupons = (): JSX.Element => {
         setPageNumber(selected);
     };
 
+    const handleFilterChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        setFilter(event.target.value);
+    };
+
     // permissionCheck
     const permissionCheckResult = checkPermissions(userData, permissionsToCheck);
-
-    useEffect(() => {
-        dispatch(getAllCoupons({ page: (pageNumber + 1), pageSize: dataPerPage, header }));
-    }, [dispatch, header, pageNumber, dataPerPage]);
-
-    useEffect(() => {
-        setCouponData(coupon_data?.data);
-    }, [coupon_data]);
 
     const handleSelectAll = () => {
         const allIds = couponData?.map(coupon => coupon._id);
@@ -64,9 +61,27 @@ const Coupons = (): JSX.Element => {
 
     const handleDelete = () => {
         if (couponData) {
-            dispatch(deleteCoupons({ selectedIDs: selectedCoupons, page: (pageNumber + 1), pageSize: dataPerPage, header }));
+            dispatch(deleteCoupons({
+                selectedIDs: selectedCoupons,
+                page: (pageNumber + 1),
+                pageSize: dataPerPage,
+                header
+            }));
         }
     };
+
+    useEffect(() => {
+        dispatch(getAllCoupons({
+            page: (pageNumber + 1),
+            pageSize: dataPerPage,
+            isExpired: filter,
+            header
+        }));
+    }, [dispatch, header, pageNumber, dataPerPage, filter]);
+
+    useEffect(() => {
+        setCouponData(coupon_data?.data);
+    }, [coupon_data]);
 
     useEffect(() => {
         if (coupon_del_resp?.success) {
@@ -91,7 +106,7 @@ const Coupons = (): JSX.Element => {
                             <ol className="breadcrumb mb-0 p-0">
                                 <li className="breadcrumb-item"><Link to="#"><i className="bx bx-home-alt"></i></Link>
                                 </li>
-                                <li className="breadcrumb-item active" aria-current="page">Coupons</li>
+                                <li className="breadcrumb-item active" aria-current="page">Create Coupons</li>
                             </ol>
                         </nav>
                     </div>
@@ -100,14 +115,12 @@ const Coupons = (): JSX.Element => {
                 <div className="card">
                     <div className="card-header">
                         <div className="row">
-                            <div className="col-md-10 py-3">
-                                <h6 className="mb-0">Create Coupon</h6>
-                            </div>
-                            <div className="col-md-2 text-end py-3">
-                                <select className="form-select">
-                                    <option value="All">All</option>
-                                    <option value="Active">Active</option>
-                                    <option value="Expired">Expired</option>
+                            <div className="col-md-10" />
+                            <div className="col-md-2 text-end py-2">
+                                <select className="form-select" value={filter} onChange={handleFilterChange}>
+                                    <option value="">All</option>
+                                    <option value="false">Active</option>
+                                    <option value="true">Expired</option>
                                 </select>
                             </div>
                         </div>

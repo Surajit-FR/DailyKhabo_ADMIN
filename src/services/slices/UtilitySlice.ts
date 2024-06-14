@@ -150,9 +150,10 @@ export const createCoupon = createAsyncThunk("/admin/api/create/coupons", async 
 });
 
 // getAllCoupons thunk
-export const getAllCoupons = createAsyncThunk("/admin/api/get/all/coupons", async ({ page, pageSize, header }: FormValues_Props, { rejectWithValue }): Promise<any> => {
+export const getAllCoupons = createAsyncThunk("/admin/api/get/all/coupons", async (params: FormValues_Props, { rejectWithValue }): Promise<any> => {
     try {
-        const response = await GETALLCOUPONS(page, pageSize, header);
+        const { page, pageSize, isExpired, header } = params;
+        const response = await GETALLCOUPONS({ page, pageSize, isExpired }, header);
         const result: any = response?.data;
         if (result?.success) return result;
     } catch (exc: any) {
@@ -162,14 +163,14 @@ export const getAllCoupons = createAsyncThunk("/admin/api/get/all/coupons", asyn
 });
 
 // deleteCoupons thunk
-export const deleteCoupons = createAsyncThunk("/admin/api/delete/coupons", async ({ selectedIDs, page, pageSize, header }: FormValues_Props, { rejectWithValue, dispatch }): Promise<any> => {
+export const deleteCoupons = createAsyncThunk("/admin/api/delete/coupons", async ({ selectedIDs, page, pageSize, isExpired, header }: FormValues_Props, { rejectWithValue, dispatch }): Promise<any> => {
     try {
         const response = await DELETECOUPONS(selectedIDs, header);
         const result: any = response?.data;
         if (result?.success) {
-            dispatch(getAllCoupons({ page, pageSize, header }));
-            return result
-        };
+            dispatch(getAllCoupons({ page, pageSize, isExpired, header }));
+            return result;
+        }
     } catch (exc: any) {
         const err: any = rejectWithValue(exc.response.data);
         return err;
