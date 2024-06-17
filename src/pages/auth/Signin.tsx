@@ -25,6 +25,7 @@ const Signin = (): JSX.Element => {
         initialValues: {
             credential: user?.credential ? user?.credential : "",
             password: user?.password ? user?.password : "",
+            user_type: "SuperAdmin",
             remember_me: user?.remember_me ? user?.remember_me : false
         },
         validationSchema: loginValidationSchema,
