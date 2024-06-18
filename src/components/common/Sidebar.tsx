@@ -34,10 +34,10 @@ const Sidebar = (): JSX.Element => {
                         </Link>
                         <ul>
                             <li>
-                                <Link to="/products"><i className="bi bi-circle"></i>Products</Link>
+                                <Link to="/product/categories"><i className="bi bi-circle"></i>Categories</Link>
                             </li>
                             <li>
-                                <Link to="/product/categories"><i className="bi bi-circle"></i>Categories</Link>
+                                <Link to="/products"><i className="bi bi-circle"></i>Products</Link>
                             </li>
                         </ul>
                     </li>

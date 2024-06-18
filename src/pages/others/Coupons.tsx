@@ -145,6 +145,7 @@ const Coupons = (): JSX.Element => {
                                 handleSelectAll={handleSelectAll}
                                 handleClearAll={handleClearAll}
                                 handleCheckboxChange={handleCheckboxChange}
+                                _TOKEN={_TOKEN}
                             />
                         </div>
                     </div>

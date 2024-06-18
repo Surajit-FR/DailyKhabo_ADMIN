@@ -148,8 +148,7 @@ const Products = (): JSX.Element => {
                                 {
                                     (permissionCheckResult?.write_create || permissionCheckResult?.all) &&
                                     <Link to="/add/product" className="btn btn-primary mb-3 mb-lg-0">
-                                        <i className="lni lni-plus me-2">
-                                        </i>Add Product
+                                        <i className="fa-solid fa-plus fa-beat-fade me-2 fs-5"></i>Add Product
                                     </Link>
                                 }
                             </div>

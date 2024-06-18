@@ -29,8 +29,7 @@ const AddProduct = (): JSX.Element => {
             productTitle: "",
             offer: false,
             offerPercentage: "",
-            is_discount_code: false,
-            discountCode: "",
+            is_coupon_code: false,
             productImages: [],
             productDescription: "",
             productKeyPoints: [''],
@@ -46,8 +45,7 @@ const AddProduct = (): JSX.Element => {
             formData.append("productTitle", values.productTitle);
             formData.append("offer", values.offer.toString());
             formData.append("offerPercentage", values.offerPercentage);
-            formData.append("is_discount_code", values.is_discount_code.toString());
-            formData.append("discountCode", values.discountCode);
+            formData.append("is_coupon_code", values.is_coupon_code.toString());
             values.productImages.forEach((image: File) => {
                 formData.append("productImages", image);
             });
@@ -208,9 +206,9 @@ const AddProduct = (): JSX.Element => {
                                                     {touched.productTitle && errors.productTitle && <div className="text-danger" style={{ fontSize: "13px" }}>*{errors.productTitle}</div>}
                                                 </div>
 
-                                                {/* Offer */}
-                                                <div className="col-12 col-lg-6">
-                                                    <label className="form-label" htmlFor="offer">Offer</label>
+                                                {/* Offer Applied*/}
+                                                <div className="col-12 col-lg-4">
+                                                    <label className="form-label" htmlFor="offer">Offer Applied</label>
                                                     <select
                                                         id="offer"
                                                         className="form-select"
@@ -226,7 +224,7 @@ const AddProduct = (): JSX.Element => {
                                                 </div>
 
                                                 {/* Offer Percentage */}
-                                                <div className="col-12 col-lg-6">
+                                                <div className="col-12 col-lg-4">
                                                     <label className="form-label" htmlFor="offerPercentage">Offer Percentage</label>
                                                     <input
                                                         id="offerPercentage"
@@ -243,39 +241,21 @@ const AddProduct = (): JSX.Element => {
                                                     {touched.offerPercentage && errors.offerPercentage && <div className="text-danger" style={{ fontSize: "13px" }}>*{errors.offerPercentage}</div>}
                                                 </div>
 
-                                                {/* Apply Discount Code */}
-                                                <div className="col-12 col-lg-6">
-                                                    <label className="form-label" htmlFor="is_discount_code">Apply Discount Code</label>
+                                                {/* Coupon Code Applied */}
+                                                <div className="col-12 col-lg-4">
+                                                    <label className="form-label" htmlFor="is_coupon_code">Coupon Code Applied</label>
                                                     <select
-                                                        id="is_discount_code"
+                                                        id="is_coupon_code"
                                                         className="form-select"
-                                                        name="is_discount_code"
-                                                        value={values.is_discount_code.toString()}
+                                                        name="is_coupon_code"
+                                                        value={values.is_coupon_code.toString()}
                                                         onChange={handleChange}
                                                         onBlur={handleBlur}
                                                     >
                                                         <option value="true">Yes</option>
                                                         <option value="false">No</option>
                                                     </select>
-                                                    {touched.is_discount_code && errors.is_discount_code && <div className="text-danger" style={{ fontSize: "13px" }}>*{errors.is_discount_code}</div>}
-                                                </div>
-
-                                                {/* Discount Code */}
-                                                <div className="col-12 col-lg-6">
-                                                    <label className="form-label" htmlFor="discountCode">Discount Code</label>
-                                                    <input
-                                                        id="discountCode"
-                                                        type="text"
-                                                        className="form-control"
-                                                        placeholder="Enter discount code"
-                                                        name="discountCode"
-                                                        value={values.discountCode}
-                                                        onChange={handleChange}
-                                                        onBlur={handleBlur}
-                                                        disabled={values.is_discount_code === false}
-                                                        style={{ border: touched.discountCode && errors.discountCode ? "1px solid red" : "" }}
-                                                    />
-                                                    {touched.discountCode && errors.discountCode && <div className="text-danger" style={{ fontSize: "13px" }}>*{errors.discountCode}</div>}
+                                                    {touched.is_coupon_code && errors.is_coupon_code && <div className="text-danger" style={{ fontSize: "13px" }}>*{errors.is_coupon_code}</div>}
                                                 </div>
 
                                                 {/* Product Images */}

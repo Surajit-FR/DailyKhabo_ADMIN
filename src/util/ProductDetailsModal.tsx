@@ -82,15 +82,19 @@ const ProductDetailsModal = ({ modalId, productID, header }: ProductDetailsModal
                             <div className="row mt-4">
                                 {/* Product Offer */}
                                 <div className="col-md-6">
-                                    <h5 style={{ fontSize: "16px" }}>Product Offer:
-                                        <span className="mx-2" style={{ fontWeight: "normal", fontSize: "14px" }}>{products_details_data?.data?.offer === "true" ? "Yes" : "No"}</span>
+                                    <h5 style={{ fontSize: "16px" }}>Offer Applied:
+                                        <span className="mx-2" style={{ fontWeight: "normal", fontSize: "14px" }}>
+                                            {products_details_data?.data?.offer === "true" ? <i className="bi bi-check2-square text-success"></i> : <i className="bi bi-x-square text-danger"></i>}
+                                        </span>
                                     </h5>
                                 </div>
 
                                 {/* Offer Percentage */}
                                 <div className="col-md-6">
                                     <h5 style={{ fontSize: "16px" }}>Offer Percentage:
-                                        <span className="mx-2" style={{ fontWeight: "normal", fontSize: "14px" }}>{products_details_data?.data?.offerPercentage ? (Number(products_details_data?.data?.offerPercentage)).toFixed(2) : "N/A"}</span>
+                                        <span className="mx-2" style={{ fontWeight: "normal", fontSize: "14px" }}>
+                                            {products_details_data?.data?.offerPercentage ? (Number(products_details_data?.data?.offerPercentage)).toFixed(2) : "0"}%
+                                        </span>
                                     </h5>
                                 </div>
 
@@ -109,9 +113,18 @@ const ProductDetailsModal = ({ modalId, productID, header }: ProductDetailsModal
                                 </div>
 
                                 {/* Discount Code */}
-                                <div className="col-md-6">
+                                {/* <div className="col-md-6">
                                     <h5 style={{ fontSize: "16px" }}>Discount Code:
                                         <span className="mx-2" style={{ fontWeight: "normal", fontSize: "14px" }}>{products_details_data?.data?.discountCode ? products_details_data?.data?.discountCode : "N/A"}</span>
+                                    </h5>
+                                </div> */}
+
+                                {/* Coupon Code */}
+                                <div className="col-md-6">
+                                    <h5 style={{ fontSize: "16px" }}>Coupon Code Applied:
+                                        <span className="mx-2" style={{ fontWeight: "normal", fontSize: "14px" }}>
+                                            {products_details_data?.data?.is_coupon_code ? <i className="bi bi-check2-square text-success"></i> : <i className="bi bi-x-square text-danger"></i>}
+                                        </span>
                                     </h5>
                                 </div>
 
