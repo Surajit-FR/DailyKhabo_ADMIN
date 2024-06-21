@@ -25,6 +25,7 @@ const Product = ({ data, setProductID, userData, header }: DataList_Props): JSX.
         alignItems: "center",
         justifyContent: "center",
         borderRadius: "5px",
+        cursor: "pointer",
     };
     const imageContainerImg: React.CSSProperties = {
         height: "100%",
@@ -72,7 +73,13 @@ const Product = ({ data, setProductID, userData, header }: DataList_Props): JSX.
                         }
                     </Slider> */}
 
-                    <div className=" mb-3" style={imageContainer}>
+                    <div
+                        className=" mb-3"
+                        style={imageContainer}
+                        data-bs-toggle="modal"
+                        data-bs-target="#productDetails"
+                        onClick={() => dispatch(getProductDetails({ product_id: data?._id, header }))}
+                    >
                         <img
                             src={`${REACT_APP_BASE_URL}${data?.productImages[0]}`}
                             className="img-fluid"
@@ -84,39 +91,27 @@ const Product = ({ data, setProductID, userData, header }: DataList_Props): JSX.
                     <h6 className="product-title">{data?.productTitle}</h6>
                     <p className="product-price fs-5 mb-1"><span>₹{Number(data?.price).toFixed(2)}</span></p>
 
-                    <div className="actions d-flex align-items-center justify-content-center gap-2 mt-3">
+                    <div className="actions d-flex align-items-center justify-content-around gap-2 mt-3">
                         {
                             (permissionCheckResult?.edit_update || permissionCheckResult?.all) &&
                             <Link
                                 to="#"
-                                className="btn btn-sm btn-outline-primary"
+                                className="btn btn-sm btn-primary"
                                 data-bs-toggle="modal"
                                 data-bs-target="#updateProductModal"
                                 onClick={() => dispatch(getProductDetails({ product_id: data?._id, header }))}
-                            ><i className="bi bi-pencil-fill"></i>Edit
+                            ><i className="bi bi-pencil-fill me-1"></i>Edit
                             </Link>
                         }
                         {
                             (permissionCheckResult?.delete || permissionCheckResult?.all) &&
                             <Link
                                 to="#"
-                                className="btn btn-sm btn-outline-danger"
+                                className="btn btn-sm btn-danger"
                                 data-bs-toggle="modal"
                                 data-bs-target="#deleteModal"
                                 onClick={() => setProductID(data?._id)}
-                            ><i className="bi bi-trash-fill"></i>Delete
-                            </Link>
-                        }
-
-                        {
-                            (permissionCheckResult?.read || permissionCheckResult?.all) &&
-                            <Link
-                                to="#"
-                                className="btn btn-sm btn-outline-info"
-                                data-bs-toggle="modal"
-                                data-bs-target="#productDetails"
-                                onClick={() => dispatch(getProductDetails({ product_id: data?._id, header }))}
-                            ><i className="bi bi-file-text"></i>Detail
+                            ><i className="bi bi-trash-fill me-1"></i>Delete
                             </Link>
                         }
                     </div>

@@ -1,4 +1,4 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import UserDropdown from './headerItems/UserDropdown';
 import { useEffect } from 'react';
 import { jwtDecode } from 'jwt-decode';
@@ -55,13 +55,13 @@ const Header = (): JSX.Element => {
 
                     <div className="top-navbar-right ms-auto">
                         <ul className="navbar-nav align-items-center">
-                            <li className="nav-item search-toggle-icon">
+                            {/* <li className="nav-item search-toggle-icon">
                                 <Link className="nav-link" to="#">
                                     <div className="">
                                         <i className="bi bi-search"></i>
                                     </div>
                                 </Link>
-                            </li>
+                            </li> */}
 
                             {/* Dropdown Large */}
                             {/* <BoxDropDown /> */}

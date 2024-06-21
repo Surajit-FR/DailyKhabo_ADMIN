@@ -3,10 +3,12 @@ import { logoutUser } from "../../../services/slices/AuthSlice";
 import { useDispatch } from "react-redux";
 import { DecryptData } from "../../../helper/EncryptDecrypt";
 import { dropdownItemsType } from "../../../config/DataTypes.config";
+import { useState } from "react";
 
 const UserDropdown = (): JSX.Element => {
     const user: string | null = window.localStorage.getItem("user");
     const _USER_DATA = DecryptData(user ?? 'null');
+    const [reload, setReload] = useState<boolean>(false);
 
     const dispatch: any = useDispatch();
     const navigate: any = useNavigate();
@@ -14,7 +16,13 @@ const UserDropdown = (): JSX.Element => {
     // Logout function
     const userLogout = () => {
         dispatch(logoutUser(navigate));
-    }
+    };
+
+    // pageReload function
+    const pageReload = () => {
+        window.location.reload();
+        setReload(!reload);
+    };
 
     // Define an array of dropdown items
     const dropdownItems: Array<dropdownItemsType> = [
@@ -27,6 +35,15 @@ const UserDropdown = (): JSX.Element => {
 
     return (
         <>
+            <li className="nav-item dropdown dropdown-user-setting">
+                <Link className="nav-link dropdown-toggle dropdown-toggle-nocaret" to="#" onClick={pageReload}>
+                    <div className="user-setting d-flex align-items-center">
+                        <i className="fa-solid fa-rotate" style={{ display: reload ? "none" : "" }}></i>
+                        <i className="fa-solid fa-rotate fa-spin" style={{ display: !reload ? "none" : "" }}></i>
+                    </div>
+                </Link>
+            </li>
+
             <li className="nav-item dropdown dropdown-user-setting">
                 <Link className="nav-link dropdown-toggle dropdown-toggle-nocaret" to="#" data-bs-toggle="dropdown">
                     <div className="user-setting d-flex align-items-center">

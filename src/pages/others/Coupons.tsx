@@ -140,6 +140,7 @@ const Coupons = (): JSX.Element => {
                                 newData={couponData}
                                 pageCount={pageCount}
                                 pageNumber={pageNumber}
+                                itemsPerPage={dataPerPage}
                                 changePage={changePage}
                                 selectedCoupons={selectedCoupons}
                                 handleSelectAll={handleSelectAll}

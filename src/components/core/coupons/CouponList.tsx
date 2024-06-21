@@ -18,6 +18,7 @@ type categoryList_props = {
     handleClearAll: () => void,
     handleCheckboxChange: (couponId: string, isChecked: boolean) => void,
     _TOKEN: any,
+    itemsPerPage: number,
 }
 
 const CouponList = (
@@ -31,6 +32,7 @@ const CouponList = (
         handleClearAll,
         handleCheckboxChange,
         _TOKEN,
+        itemsPerPage,
     }: categoryList_props
 ): JSX.Element => {
     const { coupon_del_resp, del_error } = useSelector((state: any) => state.utilitySlice);
@@ -113,7 +115,7 @@ const CouponList = (
                                 <tbody>
                                     {newData?.map((item, index) => (
                                         <Coupon
-                                            index={index}
+                                            index={index + pageNumber * itemsPerPage}
                                             key={item?._id}
                                             data={item}
                                             isSelected={selectedCoupons.includes(item._id)}

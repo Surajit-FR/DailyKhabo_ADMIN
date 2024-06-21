@@ -119,6 +119,13 @@ const ProductDetailsModal = ({ modalId, productID, header }: ProductDetailsModal
                                     </h5>
                                 </div> */}
 
+                                {/* Product Quantity */}
+                                <div className="col-md-6">
+                                    <h5 style={{ fontSize: "16px" }}>Product Quantity:
+                                        <span className="mx-2" style={{ fontWeight: "normal", fontSize: "14px" }}>{products_details_data?.data?.productQuantity}</span>
+                                    </h5>
+                                </div>
+
                                 {/* Coupon Code */}
                                 <div className="col-md-6">
                                     <h5 style={{ fontSize: "16px" }}>Coupon Code Applied:
