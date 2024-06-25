@@ -59,3 +59,10 @@ export const GETALLCOUPONS = (params = {}, header) => {
 };
 // Delete coupons
 export const DELETECOUPONS = (selectedIDs, header) => API.post("/admin/api/delete/coupons", selectedIDs, header);
+// Get all customer
+export const GETALLCUSTOMERS = (header) => API.get("/admin/api/get/all/customers", header);
+// Get all orders
+export const GETALLORDERS = (params = {},header) => {
+    const queryParams = new URLSearchParams(params).toString();
+    return API.get(`/admin/api/get/all/orders?${queryParams}`, header);
+}

@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { ADDCATEGORY, ADDPRODUCT, CREATECOUPON, DELETECATEGORY, DELETECOUPONS, DELETEPRODUCT, GETALLCATEGORIES, GETALLCOUPONS, GETALLPRODUCTS, GETPRODUCTDETAILS, UPDATECATEGORY, UPDATEPRODUCT } from "../api/Api";
+import { ADDCATEGORY, ADDPRODUCT, CREATECOUPON, DELETECATEGORY, DELETECOUPONS, DELETEPRODUCT, GETALLCATEGORIES, GETALLCOUPONS, GETALLCUSTOMERS, GETALLORDERS, GETALLPRODUCTS, GETPRODUCTDETAILS, UPDATECATEGORY, UPDATEPRODUCT } from "../api/Api";
 import { CategoryOperationResponse, ProductOperationResponse, FetchAllCategoryResponse, FetchAllProductResponse, FormValues_Props } from "../../config/DataTypes.config";
 
 // addCategory thunk
@@ -76,11 +76,11 @@ export const addProduct = createAsyncThunk("/admin/api/add/new/product", async (
 // updateProduct thunk
 export const updateProduct = createAsyncThunk("/admin/api/update/product/", async (params: FormValues_Props, { rejectWithValue, dispatch }): Promise<ProductOperationResponse | any> => {
     try {
-        const { data, page, pageSize, search, category, product_id, header } = params;
+        const { data, page, pageSize, searchQuery, category, product_id, header } = params;
         const response = await UPDATEPRODUCT(data, product_id, header);
         const result: ProductOperationResponse = response?.data;
         if (result?.success) {
-            dispatch(getAllProduct({ page, pageSize, search, category, header }));
+            dispatch(getAllProduct({ page, pageSize, searchQuery, category, header }));
             return result
         };
     } catch (exc: any) {
@@ -92,8 +92,8 @@ export const updateProduct = createAsyncThunk("/admin/api/update/product/", asyn
 // getAllProduct thunk
 export const getAllProduct = createAsyncThunk("/admin/api/get/all/product", async (params: FormValues_Props, { rejectWithValue }): Promise<FetchAllProductResponse | any> => {
     try {
-        const { page, pageSize, search, category, header } = params;
-        const response = await GETALLPRODUCTS({ page, pageSize, search, category }, header);
+        const { page, pageSize, searchQuery, category, header } = params;
+        const response = await GETALLPRODUCTS({ page, pageSize, searchQuery, category }, header);
         const result: FetchAllProductResponse = response?.data;
         if (result?.success) {
             return result
@@ -121,11 +121,11 @@ export const getProductDetails = createAsyncThunk("/admin/api/get/product/detail
 // deleteProduct thunk
 export const deleteProduct = createAsyncThunk("/admin/api/delete/product", async (params: FormValues_Props, { rejectWithValue, dispatch }): Promise<ProductOperationResponse | any> => {
     try {
-        const { page, pageSize, search, category, product_id, header } = params;
+        const { page, pageSize, searchQuery, category, product_id, header } = params;
         const response = await DELETEPRODUCT(product_id, header);
         const result: ProductOperationResponse = response?.data;
         if (result?.success) {
-            dispatch(getAllProduct({ page, pageSize, search, category, header }));
+            dispatch(getAllProduct({ page, pageSize, searchQuery, category, header }));
             return result
         };
     } catch (exc: any) {
@@ -177,6 +177,35 @@ export const deleteCoupons = createAsyncThunk("/admin/api/delete/coupons", async
     }
 });
 
+// getAllCustomers thunk
+export const getAllCustomers = createAsyncThunk("/admin/api/get/all/customers", async ({ header }: FormValues_Props, { rejectWithValue }): Promise<any> => {
+    try {
+        const response = await GETALLCUSTOMERS(header);
+        const result: any = response?.data;
+        if (result?.success) {
+            return result
+        };
+    } catch (exc: any) {
+        const err: any = rejectWithValue(exc.response.data);
+        return err;
+    }
+});
+
+// getAllOrders thunk
+export const getAllOrders = createAsyncThunk("/admin/api/get/all/orders", async (params: FormValues_Props, { rejectWithValue }): Promise<any> => {
+    try {
+        const { page, pageSize, searchQuery, header } = params;
+        const response = await GETALLORDERS({ page, pageSize, searchQuery }, header);
+        const result: any = response?.data;
+        if (result?.success) {
+            return result
+        };
+    } catch (exc: any) {
+        const err: any = rejectWithValue(exc.response.data);
+        return err;
+    }
+});
+
 const UtilitySlice = createSlice({
     name: "utilitySlice",
     initialState: {
@@ -199,6 +228,12 @@ const UtilitySlice = createSlice({
         coupon_data: [],
         add_coupon_resp_data: null,
         coupon_del_resp: null,
+
+        // Customers States
+        customers_data: [],
+
+        // Orders States
+        orders_data: [],
 
         // Common States
         utility_loading: false,
@@ -421,6 +456,36 @@ const UtilitySlice = createSlice({
             state.coupon_del_resp = coupon_del_resp;
         })
         builder.addCase(deleteCoupons.rejected, (state, { payload }) => {
+            state.utility_loading = false;
+            const err: any | null = payload;
+            state.del_error = err;
+        })
+
+        // getAllCustomers states
+        builder.addCase(getAllCustomers.pending, (state) => {
+            state.utility_loading = true;
+        })
+        builder.addCase(getAllCustomers.fulfilled, (state, { payload }) => {
+            state.utility_loading = false;
+            const customers_data: any = payload;
+            state.customers_data = customers_data;
+        })
+        builder.addCase(getAllCustomers.rejected, (state, { payload }) => {
+            state.utility_loading = false;
+            const err: any | null = payload;
+            state.del_error = err;
+        })
+
+        // getAllOrders states
+        builder.addCase(getAllOrders.pending, (state) => {
+            state.utility_loading = true;
+        })
+        builder.addCase(getAllOrders.fulfilled, (state, { payload }) => {
+            state.utility_loading = false;
+            const orders_data: any = payload;
+            state.orders_data = orders_data;
+        })
+        builder.addCase(getAllOrders.rejected, (state, { payload }) => {
             state.utility_loading = false;
             const err: any | null = payload;
             state.del_error = err;

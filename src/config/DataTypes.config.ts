@@ -34,7 +34,7 @@ export type FormValues_Props = {
     header?: CustomHeadersType | undefined;
     page?: number | undefined;
     pageSize?: number | undefined;
-    search?: string;
+    searchQuery?: string;
     category?: string;
     minPrice?: number;
     maxPrice?: number;
@@ -126,7 +126,56 @@ export type UserData = {
     __v: number;
     web_theme: string;
     remember_me: boolean;
+};
+
+// CustomerListType
+export type CustomerListType = {
+    _id: string;
+    full_name: string;
+    email: string;
+    password: string;
+    web_theme: string;
+    role: Role;
+    is_active: boolean;
+    is_delete: boolean;
+    createdAt: string;
+    updatedAt: string;
+    __v: number;
+};
+
+type Customer = {
+    email: string;
+    full_name: string;
+    phone: string;
+    address: string;
+    apartment?: string;
+    country: string;
+    state: string;
+    city: string;
+    postalCode: string;
 }
+
+type Shipping = {
+    type: 'free' | 'cod';
+    cost: number;
+}
+
+// ProductOrderListType
+export type ProductOrderListType = {
+    _id: string;
+    order_id: string;
+    productTitle: string;
+    price: number | string;
+    productImages: string[]
+    totalQuantity: number;
+    status: 'pending' | 'processing' | 'shipped' | 'delivered' | 'canceled';
+    createdAt: string;
+    updatedAt: string;
+    customer: Customer;
+    shipping: Shipping;
+    payment: 'cod' | 'prepaid' | 'online';
+    total: number;
+};
 
 // Define the type for the login success response
 type LoginSuccessResponse = {

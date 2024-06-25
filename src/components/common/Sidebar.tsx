@@ -24,8 +24,9 @@ const Sidebar = (): JSX.Element => {
                             <div className="menu-title">Dashboard</div>
                         </Link>
                     </li>
+
                     {/* Products */}
-                    <li className="menu-label">Manage Product</li>
+                    <li className="menu-label">Products</li>
                     <li>
                         <Link to="#" className="has-arrow">
                             <div className="parent-icon"><i className="bi bi-basket2-fill"></i>
@@ -42,20 +43,81 @@ const Sidebar = (): JSX.Element => {
                         </ul>
                     </li>
 
-                    {/* Pricing */}
-                    <li className="menu-label">Pricing</li>
+                    {/* Manage Coupons */}
+                    <li className="menu-label">Manage Coupons</li>
                     <li>
-                        <Link to="#" className="has-arrow">
+                        <Link to="/coupons">
                             <div className="parent-icon"><i className="bi bi-tags-fill"></i>
                             </div>
-                            <div className="menu-title">Manage Coupons</div>
+                            <div className="menu-title">Coupons</div>
+                        </Link>
+                    </li>
+
+                    {/* Manage Customers */}
+                    <li className="menu-label">Manage Customers</li>
+                    <li>
+                        <Link to="/customers">
+                            <div className="parent-icon"><i className="bi bi-person-lines-fill"></i>
+                            </div>
+                            <div className="menu-title">Customers</div>
+                        </Link>
+                    </li>
+
+                    {/* Manage Orders */}
+                    <li className="menu-label">Manage Orders</li>
+                    <li>
+                        <Link to="/orders">
+                            <div className="parent-icon"><i className="bi bi-cart-fill"></i>
+                            </div>
+                            <div className="menu-title">Orders</div>
+                        </Link>
+                    </li>
+
+                    {/* Reports and Analytics */}
+                    {/* <li className="menu-label">Reports and Analytics</li>
+                    <li>
+                        <Link to="/reports">
+                            <div className="parent-icon"><i className="bi bi-bar-chart-fill"></i>
+                            </div>
+                            <div className="menu-title">Reports</div>
+                        </Link>
+                    </li> */}
+
+                    {/* Content Management */}
+                    {/* <li className="menu-label">Content Management</li>
+                    <li>
+                        <Link to="#" className="has-arrow">
+                            <div className="parent-icon"><i className="bi bi-file-earmark-text-fill"></i>
+                            </div>
+                            <div className="menu-title">Content</div>
                         </Link>
                         <ul>
                             <li>
-                                <Link to="/coupons"><i className="bi bi-circle"></i>Coupon</Link>
+                                <Link to="/blogs-section"><i className="bi bi-circle"></i>Blogs Section</Link>
+                            </li>
+                            <li>
+                                <Link to="/about-section"><i className="bi bi-circle"></i>About Section</Link>
                             </li>
                         </ul>
+                    </li> */}
+
+                    {/* Others */}
+                    {/* <li className="menu-label">Others</li>
+                    <li>
+                        <Link to="/settings">
+                            <div className="parent-icon"><i className="bi bi-gear-fill"></i>
+                            </div>
+                            <div className="menu-title">Settings</div>
+                        </Link>
                     </li>
+
+                    <li>
+                        <Link to="/user">
+                            <div className="parent-icon"><i className="bi bi-people-fill"></i>
+                            </div>
+                            <div className="menu-title">User List</div>
+                        </Link>
+                    </li> */}
                 </ul>
                 {/* <!--end navigation--> */}
             </aside>

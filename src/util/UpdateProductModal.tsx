@@ -75,7 +75,7 @@ const UpdateProductModal = ({ modalId, pageNumber, dataPerPage, debouncedSearchQ
                 product_id: products_details_data?.data?._id,
                 page: (pageNumber + 1),
                 pageSize: dataPerPage,
-                search: debouncedSearchQuery,
+                searchQuery: debouncedSearchQuery,
                 category: selectedCategory,
                 header
             }));

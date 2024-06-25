@@ -52,7 +52,7 @@ const Products = (): JSX.Element => {
                 product_id: productID,
                 page: (pageNumber + 1),
                 pageSize: dataPerPage,
-                search: debouncedSearchQuery,
+                searchQuery: debouncedSearchQuery,
                 category: selectedCategory,
                 header
             }));
@@ -85,7 +85,7 @@ const Products = (): JSX.Element => {
         dispatch(getAllProduct({
             page: (pageNumber + 1),
             pageSize: dataPerPage,
-            search: debouncedSearchQuery,
+            searchQuery: debouncedSearchQuery,
             category: selectedCategory,
             header
         }));
