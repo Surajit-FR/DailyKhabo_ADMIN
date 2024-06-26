@@ -1,16 +1,17 @@
 import { CustomerListType } from "../../../config/DataTypes.config";
 
 type CustomerList_props = {
-    item: CustomerListType
+    item: CustomerListType;
+    index: number
 }
 
-const Customer = ({ item }: CustomerList_props): JSX.Element => {
-    // console.log(item);
+const Customer = ({ item, index }: CustomerList_props): JSX.Element => {
+    const customer_address = item?.address?.filter(addr => addr?.primary === true);
 
     return (
         <>
             <tr>
-                <td>1</td>
+                <td>{index + 1}</td>
                 <td>
                     <div className="d-flex align-items-center gap-3 cursor-pointer">
                         <img src="/assets/images/avatars/avatar-26.png" className="rounded-circle" width="44" height="44" alt="" />
@@ -19,10 +20,10 @@ const Customer = ({ item }: CustomerList_props): JSX.Element => {
                         </div>
                     </div>
                 </td>
-                <td>89 Chicago UK</td>
-                <td>Chicago</td>
-                <td>8574201</td>
-                <td>United Kingdom</td>
+                <td>{customer_address[0]?.address ? customer_address[0]?.address : "--"}</td>
+                <td>{customer_address[0]?.city ? customer_address[0]?.city : "--"}</td>
+                <td>{customer_address[0]?.postalCode ? customer_address[0]?.postalCode : "--"}</td>
+                <td>{customer_address[0]?.country ? customer_address[0]?.country : "--"}</td>
                 {/* <td>
                     <div className="table-actions d-flex align-items-center gap-3 fs-6">
                         <Link to="#" className="text-primary" data-bs-toggle="tooltip" data-bs-placement="bottom"

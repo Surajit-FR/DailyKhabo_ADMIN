@@ -5,6 +5,7 @@ import { Dispatch } from "redux";
 import { getAllCustomers } from "../../services/slices/UtilitySlice";
 import { CustomHeadersType, CustomerListType } from "../../config/DataTypes.config";
 import Customer from "../../components/core/customers/Customer";
+import Search from "../../components/common/Search";
 
 type Customers_props = {
     header: CustomHeadersType | undefined
@@ -15,10 +16,30 @@ const Customers = ({ header }: Customers_props): JSX.Element => {
     const dispatch: Dispatch<any> = useDispatch();
 
     const [customersData, setCustomersData] = useState<Array<CustomerListType>>([]);
+    const [searchQuery, setSearchQuery] = useState<string>("");
+    const [debouncedSearchQuery, setDebouncedSearchQuery] = useState<string>("");
+
+    const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setSearchQuery(e.target.value);
+    };
+
+    // Debounce logic for search input
+    useEffect(() => {
+        const handler = setTimeout(() => {
+            setDebouncedSearchQuery(searchQuery);
+        }, 600);
+
+        return () => {
+            clearTimeout(handler);
+        };
+    }, [searchQuery]);
 
     useEffect(() => {
-        dispatch(getAllCustomers({ header }));
-    }, [dispatch, header]);
+        dispatch(getAllCustomers({
+            searchQuery: debouncedSearchQuery,
+            header,
+        }));
+    }, [dispatch, debouncedSearchQuery, header]);
 
 
     useEffect(() => {
@@ -48,11 +69,11 @@ const Customers = ({ header }: Customers_props): JSX.Element => {
                     <div className="card-body">
                         <div className="d-flex align-items-center">
                             <h5 className="mb-0">Customer Details</h5>
-                            <form className="ms-auto position-relative">
-                                <div className="position-absolute top-50 translate-middle-y search-icon px-3"><i className="bi bi-search"></i>
-                                </div>
-                                <input className="form-control ps-5" type="text" placeholder="search" />
-                            </form>
+                            <Search
+                                placeholder="Search Customer"
+                                value={searchQuery}
+                                onChange={handleSearchChange}
+                            />
                         </div>
                         <div className="table-responsive mt-3">
                             <table className="table align-middle">
@@ -73,6 +94,7 @@ const Customers = ({ header }: Customers_props): JSX.Element => {
                                             return (
                                                 <Customer
                                                     key={index}
+                                                    index={index}
                                                     item={item}
                                                 />
                                             )

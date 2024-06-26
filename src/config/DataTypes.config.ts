@@ -107,6 +107,19 @@ export type Role = {
     permissions: Permission[];
 };
 
+// Define the type for the Address,
+export type Address = {
+    _id: string;
+    user: string;
+    address: string;
+    apartment: string;
+    country: string;
+    state: string;
+    city: string;
+    postalCode: string;
+    primary: boolean;
+};
+
 // PermissionCheckResult type
 export type PermissionCheckResult = {
     [key: string]: boolean;
@@ -119,6 +132,7 @@ export type UserData = {
     email: string;
     password: string;
     role: Role;
+    address: Address;
     is_active: boolean;
     is_delete: boolean;
     createdAt: string;
@@ -136,6 +150,7 @@ export type CustomerListType = {
     password: string;
     web_theme: string;
     role: Role;
+    address: Array<Address>;
     is_active: boolean;
     is_delete: boolean;
     createdAt: string;

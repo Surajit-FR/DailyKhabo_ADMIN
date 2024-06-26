@@ -178,9 +178,10 @@ export const deleteCoupons = createAsyncThunk("/admin/api/delete/coupons", async
 });
 
 // getAllCustomers thunk
-export const getAllCustomers = createAsyncThunk("/admin/api/get/all/customers", async ({ header }: FormValues_Props, { rejectWithValue }): Promise<any> => {
+export const getAllCustomers = createAsyncThunk("/admin/api/get/all/customers", async (params: FormValues_Props, { rejectWithValue }): Promise<any> => {
     try {
-        const response = await GETALLCUSTOMERS(header);
+        const { searchQuery, header } = params;
+        const response = await GETALLCUSTOMERS({ searchQuery }, header);
         const result: any = response?.data;
         if (result?.success) {
             return result

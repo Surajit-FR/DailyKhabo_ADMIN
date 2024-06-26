@@ -20,7 +20,7 @@ const Order = ({ item }: Order_props) => {
                         <td><span className="badge bg-light-warning text-warning w-100">{item?.status?.toUpperCase()}</span></td>
                         : item?.status === "canceled" ?
                             <td><span className="badge bg-light-danger text-danger w-100">{item?.status?.toUpperCase()}</span></td>
-                            : <td><span className="badge bg-light-success text-success w-100">Paid</span></td>
+                            : <td><span className="badge bg-light-success text-success w-100">{item?.status?.toUpperCase()}</span></td>
                 }
 
                 <td>₹ {item?.price}</td>
