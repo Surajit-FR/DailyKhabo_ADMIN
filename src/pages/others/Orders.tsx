@@ -8,12 +8,14 @@ import Order from "../../components/core/orders/Order";
 import { REACT_APP_ORDER_PER_PAGE } from "../../config/App.config";
 import Search from "../../components/common/Search";
 import Pagination from "../../util/Pagination";
+import InvoiceModal from "../../util/InvoiceModal";
 
 type Orders_props = {
-    header: CustomHeadersType | undefined
+    header: CustomHeadersType | undefined;
+    _TOKEN: string
 }
 
-const Orders = ({ header }: Orders_props): JSX.Element => {
+const Orders = ({ header, _TOKEN }: Orders_props): JSX.Element => {
     const { orders_data } = useSelector((state: any) => state.utilitySlice);
     const dispatch: Dispatch<any> = useDispatch();
 
@@ -61,6 +63,13 @@ const Orders = ({ header }: Orders_props): JSX.Element => {
 
     return (
         <>
+            {/* Product Details Modal */}
+            <InvoiceModal
+                modalId="invoiceDetails"
+                orderID=""
+                _TOKEN={_TOKEN}
+            />
+
             <main className="page-content">
                 {/* <!--breadcrumb--> */}
                 <div className="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
@@ -82,7 +91,7 @@ const Orders = ({ header }: Orders_props): JSX.Element => {
                         <div className="d-flex align-items-center">
                             <h5 className="mb-0">Order Table</h5>
                             <Search
-                                placeholder="Search Orders"
+                                placeholder="Search Order ID"
                                 value={searchQuery}
                                 onChange={handleSearchChange}
                             />
@@ -91,13 +100,12 @@ const Orders = ({ header }: Orders_props): JSX.Element => {
                             <table className="table align-middle mb-0">
                                 <thead className="table-light">
                                     <tr>
-                                        <th>Product</th>
-                                        <th>Photo</th>
-                                        <th>Product ID</th>
+                                        <th>Order ID</th>
                                         <th>Status</th>
                                         <th>Amount</th>
                                         <th>Date & Time</th>
                                         <th>Shipping</th>
+                                        <th className="text-center">Invoice</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -108,6 +116,7 @@ const Orders = ({ header }: Orders_props): JSX.Element => {
                                                 <Order
                                                     key={index}
                                                     item={item}
+                                                    header={header}
                                                 />
                                             )
                                         })

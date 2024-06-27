@@ -69,3 +69,5 @@ export const GETALLORDERS = (params = {}, header) => {
     const queryParams = new URLSearchParams(params).toString();
     return API.get(`/admin/api/get/all/orders?${queryParams}`, header);
 }
+// Get Invoice details
+export const GETINVOICEDETAILS = (order_id, header) => API.get(`/admin/api/get/invoice/details/${order_id}`, header);

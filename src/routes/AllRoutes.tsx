@@ -27,7 +27,7 @@ const AllRoutes = (): JSX.Element => {
                 <Route path='/product/categories' element={<Categories />} />
                 <Route path='/coupons' element={<Coupons />} />
                 <Route path='/customers' element={<Customers header={header} />} />
-                <Route path='/orders' element={<Orders header={header} />} />
+                <Route path='/orders' element={<Orders header={header} _TOKEN={_TOKEN} />} />
             </Routes>
         </>
     );

@@ -41,6 +41,7 @@ export type FormValues_Props = {
     navigate?: any;
     category_id?: string | undefined;
     product_id?: string | undefined;
+    order_id?: string | undefined;
     selectedIDs?: Array<string>;
     isExpired?: string;
     params?: {
@@ -158,7 +159,7 @@ export type CustomerListType = {
     __v: number;
 };
 
-type Customer = {
+export type CustomerType = {
     email: string;
     full_name: string;
     phone: string;
@@ -170,7 +171,21 @@ type Customer = {
     postalCode: string;
 }
 
-type Shipping = {
+export type ProductType = {
+    _id: string;
+    productTitle: string;
+    productImages: string[];
+    price: string;
+}
+
+export type ItemType = {
+    cart: string;
+    product: ProductType;
+    quantity: number;
+    _id: string;
+}
+
+export type ShippingType = {
     type: 'free' | 'cod';
     cost: number;
 }
@@ -178,18 +193,19 @@ type Shipping = {
 // ProductOrderListType
 export type ProductOrderListType = {
     _id: string;
-    order_id: string;
-    productTitle: string;
-    price: number | string;
-    productImages: string[]
-    totalQuantity: number;
-    status: 'pending' | 'processing' | 'shipped' | 'delivered' | 'canceled';
+    user: string;
+    orderId: string;
+    items: Array<ItemType>,
+    payment: string;
+    status: string;
+    subtotal: number;
+    discount: number;
+    total: number;
+    shipping: ShippingType;
     createdAt: string;
     updatedAt: string;
-    customer: Customer;
-    shipping: Shipping;
-    payment: 'cod' | 'prepaid' | 'online';
-    total: number;
+    customer: CustomerType;
+    __v: number;
 };
 
 // Define the type for the login success response

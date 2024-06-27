@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { ADDCATEGORY, ADDPRODUCT, CREATECOUPON, DELETECATEGORY, DELETECOUPONS, DELETEPRODUCT, GETALLCATEGORIES, GETALLCOUPONS, GETALLCUSTOMERS, GETALLORDERS, GETALLPRODUCTS, GETPRODUCTDETAILS, UPDATECATEGORY, UPDATEPRODUCT } from "../api/Api";
+import { ADDCATEGORY, ADDPRODUCT, CREATECOUPON, DELETECATEGORY, DELETECOUPONS, DELETEPRODUCT, GETALLCATEGORIES, GETALLCOUPONS, GETALLCUSTOMERS, GETALLORDERS, GETALLPRODUCTS, GETINVOICEDETAILS, GETPRODUCTDETAILS, UPDATECATEGORY, UPDATEPRODUCT } from "../api/Api";
 import { CategoryOperationResponse, ProductOperationResponse, FetchAllCategoryResponse, FetchAllProductResponse, FormValues_Props } from "../../config/DataTypes.config";
 
 // addCategory thunk
@@ -207,6 +207,20 @@ export const getAllOrders = createAsyncThunk("/admin/api/get/all/orders", async 
     }
 });
 
+// getInvoiceDetails thunk
+export const getInvoiceDetails = createAsyncThunk("/admin/api/get/invoice/details/", async ({ order_id, header }: FormValues_Props, { rejectWithValue }): Promise<any> => {
+    try {
+        const response = await GETINVOICEDETAILS(order_id, header);
+        const result: any = response?.data;
+        if (result?.success) {
+            return result
+        };
+    } catch (exc: any) {
+        const err: any = rejectWithValue(exc.response.data);
+        return err;
+    }
+});
+
 const UtilitySlice = createSlice({
     name: "utilitySlice",
     initialState: {
@@ -235,6 +249,9 @@ const UtilitySlice = createSlice({
 
         // Orders States
         orders_data: [],
+
+        // Invoice details data
+        invoice_details_data: {},
 
         // Common States
         utility_loading: false,
@@ -268,6 +285,10 @@ const UtilitySlice = createSlice({
         },
         clearDelError(state) {
             state.del_error = null;
+        },
+
+        clearInvoiceDetailsData(state) {
+            state.invoice_details_data = {};
         },
 
         clearAddCouponRespData(state) {
@@ -491,6 +512,21 @@ const UtilitySlice = createSlice({
             const err: any | null = payload;
             state.del_error = err;
         })
+
+        // getInvoiceDetails states
+        builder.addCase(getInvoiceDetails.pending, (state) => {
+            state.utility_loading = true;
+        })
+        builder.addCase(getInvoiceDetails.fulfilled, (state, { payload }) => {
+            state.utility_loading = false;
+            const invoice_details_data: any = payload;
+            state.invoice_details_data = invoice_details_data?.data;
+        })
+        builder.addCase(getInvoiceDetails.rejected, (state, { payload }) => {
+            state.utility_loading = false;
+            const err: any | null = payload;
+            state.del_error = err;
+        })
     }
 })
 
@@ -509,6 +545,8 @@ export const {
 
     clearAddCouponRespData,
     clearCouponDelResp,
+
+    clearInvoiceDetailsData,
 
     clearError,
 } = UtilitySlice.actions;
