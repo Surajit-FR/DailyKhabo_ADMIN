@@ -28,7 +28,7 @@ const InvoiceModal = ({ modalId, _TOKEN, orderID }: InvoiceModal_Props): JSX.Ele
                 };
 
                 // Make a POST request to your backend API
-                const response = await axios.post(`${REACT_APP_BASE_URL}/admin/api/generate-pdf`, requestData, {
+                const response = await axios.post(`${REACT_APP_BASE_URL}/admin/api/generate/invoice-pdf`, requestData, {
                     headers: { Authorization: `Bearer ${_TOKEN}` },
                     responseType: 'blob'
                 });
