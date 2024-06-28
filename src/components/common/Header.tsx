@@ -5,7 +5,7 @@ import { jwtDecode } from 'jwt-decode';
 import { useDispatch } from 'react-redux';
 import { Dispatch } from 'redux';
 import { logoutUser } from '../../services/slices/AuthSlice';
-import toast from 'react-hot-toast';
+import { showToast } from '../../helper/Toast';
 // import BoxDropDown from './headerItems/BoxDropDown';
 // import MessageDropdown from './headerItems/MessageDropdown';
 // import NotiDropdown from './headerItems/NotiDropdown';
@@ -24,17 +24,7 @@ const Header = (): JSX.Element => {
             const isExpired = decodedJwt?.exp ? decodedJwt.exp < Date.now() / 1000 : false;
             if (isExpired) {
                 dispatch(logoutUser(navigate));
-                toast.error("Session Expired. You've been logged out. Please signin again.", {
-                    duration: 4000,
-                    style: {
-                        background: "#000",
-                        color: "#fff"
-                    },
-                    iconTheme: {
-                        primary: "#fff",
-                        secondary: "#f00"
-                    },
-                })
+                showToast({ message: "Session Expired. You've been logged out. Please signin again.", type: 'error', durationTime: 4000, position: "top-center" });
             }
         } else {
             navigate('/admin/signin')
