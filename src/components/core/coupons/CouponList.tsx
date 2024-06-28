@@ -5,8 +5,9 @@ import Coupon from './Coupon';
 import CustomAlert from '../../../util/CustomAlert';
 import { clearCouponDelResp, clearDelError } from '../../../services/slices/UtilitySlice';
 import { Dispatch } from 'redux';
-import axios from 'axios';
-import { REACT_APP_BASE_URL } from '../../../config/App.config';
+import { handleCSVDownload } from '../../../helper/DownloadFile';
+import { useState } from 'react';
+import Loader from '../../../util/Loader';
 
 type categoryList_props = {
     newData: Array<CouponListType>,
@@ -37,38 +38,13 @@ const CouponList = (
 ): JSX.Element => {
     const { coupon_del_resp, del_error } = useSelector((state: any) => state.utilitySlice);
     const dispatch: Dispatch<any> = useDispatch();
-
-    const handleDownload = async () => {
-        try {
-            const response = await axios.get(`${REACT_APP_BASE_URL}/admin/api/coupons/download-csv`, {
-                headers: { Authorization: `Bearer ${_TOKEN}` },
-                responseType: 'blob' // Important for handling binary data
-            });
-
-            // Create a link element
-            const url = window.URL.createObjectURL(new Blob([response.data]));
-            const link = document.createElement('a');
-            const filename = `coupons_${(new Date()).toLocaleDateString()}.csv`;
-
-            link.href = url;
-            link.setAttribute('download', filename); // Name of the file to be downloaded
-            document.body.appendChild(link);
-            link.click();
-
-            // Clean up and remove the link
-            if (link.parentNode) {
-                link.parentNode.removeChild(link);
-            }
-            window.URL.revokeObjectURL(url); // Clean up the object URL
-        } catch (error) {
-            console.error('Error downloading the CSV', error);
-        }
-    };
-
     const allSelected = newData?.length > 0 && selectedCoupons.length === newData?.length;
+    const [loading, setLoading] = useState<boolean>(false);
 
     return (
         <>
+            <Loader loading={loading} />
+            
             <div className="col-12 col-lg-8 d-flex">
                 <div className="card border shadow-none w-100">
                     <div className="card-body">
@@ -92,7 +68,7 @@ const CouponList = (
                                 </div>
                                 <div>
                                     {/* Download Excel Button */}
-                                    <button className="btn btn-outline-success" onClick={handleDownload}>
+                                    <button className="btn btn-outline-success" onClick={() => handleCSVDownload(_TOKEN, setLoading)}>
                                         <i className='fa-solid fa-download fa-bounce me-2'></i>Download
                                     </button>
                                 </div>

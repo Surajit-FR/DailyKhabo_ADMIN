@@ -2,11 +2,9 @@ import { Dispatch } from "redux";
 import { useDispatch, useSelector } from "react-redux";
 import { clearInvoiceDetailsData } from "../services/slices/UtilitySlice";
 import { formatDateTime } from "../helper/FormatDateTime";
-import axios from "axios";
-import { REACT_APP_BASE_URL } from '../config/App.config';
-import { showToast } from "../helper/Toast";
 import { useState } from "react";
 import Loader from "./Loader";
+import { handleDownloadPdf, handlePrintPdf } from "../helper/DownloadFile";
 
 type InvoiceModal_Props = {
     modalId: string;
@@ -20,82 +18,6 @@ const InvoiceModal = ({ modalId, _TOKEN, orderID }: InvoiceModal_Props): JSX.Ele
     const [loading, setLoading] = useState(false);
 
     const CUSTOMER_ADDRS = `${invoice_details_data?.customer?.address}, ${invoice_details_data?.customer?.apartment}, ${invoice_details_data?.customer?.country}, ${invoice_details_data?.customer?.state}, ${invoice_details_data?.customer?.city}, ${invoice_details_data?.customer?.postalCode}`
-
-    // handleDownloadPdf func.
-    const handleDownloadPdf = async () => {
-        setLoading(true);
-        try {
-            const requestData = {
-                invoiceDetails: invoice_details_data
-            };
-
-            // Make a POST request to your backend API
-            const response = await axios.post(`${REACT_APP_BASE_URL}/admin/api/generate/invoice-pdf`, requestData, {
-                headers: { Authorization: `Bearer ${_TOKEN}` },
-                responseType: 'blob'
-            });
-
-            const blob = new Blob([response.data], { type: 'application/pdf' });
-
-            // Generate a unique filename with timestamp
-            const timestamp = new Date().toISOString().replace(/[-T:Z.]/g, '');
-            const filename = `invoice_${timestamp}.pdf`;
-
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.style.display = 'none';
-            a.href = url;
-            a.download = filename;
-
-            document.body.appendChild(a);
-            a.click();
-
-            // Clean up: remove the link and revoke the URL
-            document.body.removeChild(a);
-            window.URL.revokeObjectURL(url);
-        } catch (error) {
-            showToast({ message: "Failed to download the PDF. Please try again.", type: 'error', durationTime: 3000, position: "top-center" });
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    // handlePrintPdf func.
-    const handlePrintPdf = async () => {
-        setLoading(true);
-        try {
-            const requestData = {
-                invoiceDetails: invoice_details_data
-            };
-
-            // Make a POST request to your backend API
-            const response = await axios.post(`${REACT_APP_BASE_URL}/admin/api/generate/invoice-pdf`, requestData, {
-                headers: { Authorization: `Bearer ${_TOKEN}` },
-                responseType: 'blob'
-            });
-
-            const blob = new Blob([response.data], { type: 'application/pdf' });
-            const url = window.URL.createObjectURL(blob);
-            const newWindow = window.open(url, '_blank');
-
-            if (newWindow) {
-                newWindow.onload = () => {
-                    setTimeout(() => {
-                        newWindow.print();
-                    }, 1000);
-                };
-            } else {
-                alert('Please allow popups for this site to print the PDF.');
-            }
-
-            // Clean up: revoke the URL
-            window.URL.revokeObjectURL(url);
-        } catch (error) {
-            showToast({ message: "Failed to print the PDF. Please try again.", type: 'error', durationTime: 3000, position: "top-center" });
-        } finally {
-            setLoading(false);
-        }
-    };
 
     return (
         <>
@@ -218,8 +140,8 @@ const InvoiceModal = ({ modalId, _TOKEN, orderID }: InvoiceModal_Props): JSX.Ele
 
                                                 <div className="d-print-none mt-4">
                                                     <div className="float-end">
-                                                        <button onClick={handleDownloadPdf} className="btn btn-success"><i className="fa-solid fa-download me-2"></i>Download</button>
-                                                        <button onClick={handlePrintPdf} className="btn btn-primary ms-2"><i className="fa-solid fa-print me-2"></i>Print</button>
+                                                        <button onClick={() => handleDownloadPdf(invoice_details_data, _TOKEN, setLoading)} className="btn btn-success"><i className="fa-solid fa-download me-2"></i>Download</button>
+                                                        <button onClick={() => handlePrintPdf(invoice_details_data, _TOKEN, setLoading)} className="btn btn-primary ms-2"><i className="fa-solid fa-print me-2"></i>Print</button>
                                                     </div>
                                                 </div>
                                             </div>
