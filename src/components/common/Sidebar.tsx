@@ -62,6 +62,13 @@ const Sidebar = (): JSX.Element => {
                             <div className="menu-title">Customers</div>
                         </Link>
                     </li>
+                    <li>
+                        <Link to="/feedback">
+                            <div className="parent-icon"><i className="bi bi-blockquote-left"></i>
+                            </div>
+                            <div className="menu-title">Customer's Feedback</div>
+                        </Link>
+                    </li>
 
                     {/* Manage Orders */}
                     <li className="menu-label">Manage Orders</li>

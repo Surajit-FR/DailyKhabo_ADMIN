@@ -1,5 +1,5 @@
 import RevenueHistory from "../charts/RevenueHistory";
-import TaskOverview from "../charts/TaskOverview";
+// import TaskOverview from "../charts/TaskOverview";
 
 const ChartSection = (): JSX.Element => {
     return (
@@ -8,7 +8,7 @@ const ChartSection = (): JSX.Element => {
                 {/* Revenue History */}
                 <RevenueHistory />
                 {/* Task Overview */}
-                <TaskOverview />
+                {/* <TaskOverview /> */}
             </div>
         </>
     );

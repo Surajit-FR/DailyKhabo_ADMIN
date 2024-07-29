@@ -7,6 +7,7 @@ import Coupons from '../pages/others/Coupons';
 import Customers from '../pages/others/Customers';
 import Orders from '../pages/others/Orders';
 import { useMemo } from 'react';
+import CustomerFeedback from '../pages/others/CustomerFeedback';
 
 
 const AllRoutes = (): JSX.Element => {
@@ -27,6 +28,7 @@ const AllRoutes = (): JSX.Element => {
                 <Route path='/product/categories' element={<Categories />} />
                 <Route path='/coupons' element={<Coupons />} />
                 <Route path='/customers' element={<Customers header={header} />} />
+                <Route path='/feedback' element={<CustomerFeedback header={header} />} />
                 <Route path='/orders' element={<Orders header={header} _TOKEN={_TOKEN} />} />
             </Routes>
         </>

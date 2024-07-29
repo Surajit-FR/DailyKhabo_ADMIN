@@ -26,7 +26,7 @@ const UserDropdown = (): JSX.Element => {
 
     // Define an array of dropdown items
     const dropdownItems: Array<dropdownItemsType> = [
-        { icon: "bi bi-person-fill", text: "Profile", link: "/user/profile" },
+        // { icon: "bi bi-person-fill", text: "Profile", link: "/user/profile" },
         // { icon: "bi bi-gear-fill", text: "Setting", link: "#" },
         { icon: "bi bi-speedometer", text: "Dashboard", link: "/dashboard" },
         // { icon: "bi bi-piggy-bank-fill", text: "Earnings", link: "#" },
@@ -67,7 +67,7 @@ const UserDropdown = (): JSX.Element => {
                     </li>
 
                     {/* Dynamically generate dropdown items */}
-                    {dropdownItems.map((item, index) => (
+                    {dropdownItems?.map((item, index) => (
                         <li key={index}>
                             <Link className="dropdown-item" to={item.link}>
                                 <div className="d-flex align-items-center">

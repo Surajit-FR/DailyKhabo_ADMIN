@@ -1,4 +1,4 @@
-import SalesByCountries from "../map_products/SalesByCountries";
+// import SalesByCountries from "../map_products/SalesByCountries";
 import TopSellingProducts from "../map_products/TopSellingProducts";
 
 const CountriesTopSellingProducts = (): JSX.Element => {
@@ -6,7 +6,7 @@ const CountriesTopSellingProducts = (): JSX.Element => {
         <>
             <div className="row">
                 {/* Sales By Countries */}
-                <SalesByCountries />
+                {/* <SalesByCountries /> */}
                 {/* Top Selling Products */}
                 <TopSellingProducts />
             </div>

@@ -52,31 +52,33 @@ type DataListProps = {
 const Coupon = ({ data, index, isSelected, handleCheckboxChange }: DataListProps): JSX.Element => {
 
     const onCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        handleCheckboxChange(data._id, e.target.checked);
+        handleCheckboxChange(data?._id, e.target.checked);
     };
 
     return (
-        <tr>
-            <td>{index + 1}.</td>
-            <td>{data?.discount_coupon}</td>
-            <td>{data?.discount_amount}</td>
-            <td>
-                {
-                    data?.is_expired ?
-                        <span className='text-danger' style={{ fontSize: "18px" }}>EXPIRED</span>
-                        : <span className='text-success' style={{ fontSize: "18px" }}>ACTIVE</span>
-                }
-            </td>
-            <td>{formatDateTime(data?.expiry_date)}</td>
-            <td>
-                <HiddenCheckbox
-                    id={data?._id}
-                    checked={isSelected}
-                    onChange={onCheckboxChange}
-                />
-                <CustomCheckboxContainer htmlFor={data?._id}></CustomCheckboxContainer>
-            </td>
-        </tr>
+        <>
+            <tr>
+                <td>{index + 1}.</td>
+                <td>{data?.discount_coupon}</td>
+                <td>{data?.discount_amount}</td>
+                <td>
+                    {
+                        data?.is_expired ?
+                            <span className='text-danger' style={{ fontSize: "18px" }}>EXPIRED</span>
+                            : <span className='text-success' style={{ fontSize: "18px" }}>ACTIVE</span>
+                    }
+                </td>
+                <td>{formatDateTime(data?.expiry_date)}</td>
+                <td>
+                    <HiddenCheckbox
+                        id={data?._id}
+                        checked={isSelected}
+                        onChange={onCheckboxChange}
+                    />
+                    <CustomCheckboxContainer htmlFor={data?._id}></CustomCheckboxContainer>
+                </td>
+            </tr>
+        </>
     );
 };
 

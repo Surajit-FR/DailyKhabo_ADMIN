@@ -42,6 +42,7 @@ export type FormValues_Props = {
     category_id?: string | undefined;
     product_id?: string | undefined;
     order_id?: string | undefined;
+    feedback_id?: string | undefined;
     selectedIDs?: Array<string>;
     isExpired?: string;
     params?: {
@@ -325,6 +326,19 @@ export interface CustomJwtPayload extends JwtPayload {
     remember_me?: boolean;
     createdAt?: string;
     updatedAt?: string;
+}
+
+export interface FeedbackListType {
+    _id: string;
+    full_name: string;
+    email: string;
+    phone: string;
+    designation: string;
+    message: string;
+    createdAt: Date;
+    updatedAt: Date;
+    __v: number;
+    is_highlighted: boolean;
 }
 
 // Common response type for category operations

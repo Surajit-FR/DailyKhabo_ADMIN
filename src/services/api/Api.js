@@ -71,3 +71,9 @@ export const GETALLORDERS = (params = {}, header) => {
 }
 // Get Invoice details
 export const GETINVOICEDETAILS = (order_id, header) => API.get(`/admin/api/get/invoice/details/${order_id}`, header);
+// Get all feedbacks
+export const GETALLFEEDBACKS = (header) => API.get("/admin/api/get/testimonials", header);
+// Update feedback
+export const UPDATEFEEDBACK = (feedback_id, header) => API.post(`/admin/api/mark/feedback/${feedback_id}`, header);
+// Delete feedbacks
+export const DELETEFEEDBACKS = (selectedIDs, header) => API.post("/admin/api/delete/feedbacks", selectedIDs, header);

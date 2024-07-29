@@ -1,6 +1,31 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { ADDCATEGORY, ADDPRODUCT, CREATECOUPON, DELETECATEGORY, DELETECOUPONS, DELETEPRODUCT, GETALLCATEGORIES, GETALLCOUPONS, GETALLCUSTOMERS, GETALLORDERS, GETALLPRODUCTS, GETINVOICEDETAILS, GETPRODUCTDETAILS, UPDATECATEGORY, UPDATEPRODUCT } from "../api/Api";
-import { CategoryOperationResponse, ProductOperationResponse, FetchAllCategoryResponse, FetchAllProductResponse, FormValues_Props } from "../../config/DataTypes.config";
+import {
+    ADDCATEGORY,
+    ADDPRODUCT,
+    CREATECOUPON,
+    DELETECATEGORY,
+    DELETECOUPONS,
+    DELETEFEEDBACKS,
+    DELETEPRODUCT,
+    GETALLCATEGORIES,
+    GETALLCOUPONS,
+    GETALLCUSTOMERS,
+    GETALLFEEDBACKS,
+    GETALLORDERS,
+    GETALLPRODUCTS,
+    GETINVOICEDETAILS,
+    GETPRODUCTDETAILS,
+    UPDATECATEGORY,
+    UPDATEFEEDBACK,
+    UPDATEPRODUCT
+} from "../api/Api";
+import {
+    CategoryOperationResponse,
+    ProductOperationResponse,
+    FetchAllCategoryResponse,
+    FetchAllProductResponse,
+    FormValues_Props
+} from "../../config/DataTypes.config";
 
 // addCategory thunk
 export const addCategory = createAsyncThunk("/admin/api/add/new/category", async ({ data, page, pageSize, header }: FormValues_Props, { rejectWithValue, dispatch }): Promise<CategoryOperationResponse | any> => {
@@ -221,6 +246,50 @@ export const getInvoiceDetails = createAsyncThunk("/admin/api/get/invoice/detail
     }
 });
 
+// getAllFeedbacks thunk
+export const getAllFeedbacks = createAsyncThunk("/admin/api/get/testimonials", async ({ header }: FormValues_Props, { rejectWithValue }): Promise<any> => {
+    try {
+        const response = await GETALLFEEDBACKS(header);
+        const result: any = response?.data;
+        if (result?.success) {
+            return result
+        };
+    } catch (exc: any) {
+        const err: any = rejectWithValue(exc.response.data);
+        return err;
+    }
+});
+
+// updateFeedback thunk
+export const updateFeedback = createAsyncThunk("/admin/api/mark/feedback/", async ({ feedback_id, header }: FormValues_Props, { rejectWithValue, dispatch }): Promise<any> => {
+    try {
+        const response = await UPDATEFEEDBACK(feedback_id, header);
+        const result: ProductOperationResponse = response?.data;
+        if (result?.success) {
+            dispatch(getAllFeedbacks({ header }));
+            return result
+        };
+    } catch (exc: any) {
+        const err: any = rejectWithValue(exc.response.data);
+        return err;
+    }
+});
+
+// deleteFeedbacks thunk
+export const deleteFeedbacks = createAsyncThunk("/admin/api/delete/feedbacks", async ({ selectedIDs, header }: FormValues_Props, { rejectWithValue, dispatch }): Promise<any> => {
+    try {
+        const response = await DELETEFEEDBACKS(selectedIDs, header);
+        const result: any = response?.data;
+        if (result?.success) {
+            dispatch(getAllFeedbacks({ header }));
+            return result;
+        }
+    } catch (exc: any) {
+        const err: any = rejectWithValue(exc.response.data);
+        return err;
+    }
+});
+
 const UtilitySlice = createSlice({
     name: "utilitySlice",
     initialState: {
@@ -252,6 +321,10 @@ const UtilitySlice = createSlice({
 
         // Invoice details data
         invoice_details_data: {},
+
+        // Customer feedback data
+        customer_feedback_data: [],
+        del_resp: null,
 
         // Common States
         utility_loading: false,
@@ -296,6 +369,10 @@ const UtilitySlice = createSlice({
         },
         clearCouponDelResp(state) {
             state.coupon_del_resp = null;
+        },
+
+        clearFeedbackDelResp(state) {
+            state.del_resp = null;
         },
 
         clearError(state) {
@@ -527,6 +604,36 @@ const UtilitySlice = createSlice({
             const err: any | null = payload;
             state.del_error = err;
         })
+
+        // getAllFeedbacks states
+        builder.addCase(getAllFeedbacks.pending, (state) => {
+            state.utility_loading = true;
+        })
+        builder.addCase(getAllFeedbacks.fulfilled, (state, { payload }) => {
+            state.utility_loading = false;
+            const customer_feedback_data: any = payload;
+            state.customer_feedback_data = customer_feedback_data?.data;
+        })
+        builder.addCase(getAllFeedbacks.rejected, (state, { payload }) => {
+            state.utility_loading = false;
+            const err: any | null = payload;
+            state.del_error = err;
+        })
+
+        // deleteFeedbacks states
+        builder.addCase(deleteFeedbacks.pending, (state) => {
+            state.utility_loading = true;
+        })
+        builder.addCase(deleteFeedbacks.fulfilled, (state, { payload }) => {
+            state.utility_loading = false;
+            const del_resp: any = payload;
+            state.del_resp = del_resp;
+        })
+        builder.addCase(deleteFeedbacks.rejected, (state, { payload }) => {
+            state.utility_loading = false;
+            const err: any | null = payload;
+            state.del_error = err;
+        })
     }
 })
 
@@ -547,6 +654,8 @@ export const {
     clearCouponDelResp,
 
     clearInvoiceDetailsData,
+
+    clearFeedbackDelResp,
 
     clearError,
 } = UtilitySlice.actions;
