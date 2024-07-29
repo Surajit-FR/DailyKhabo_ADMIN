@@ -47,14 +47,14 @@ const UserDropdown = (): JSX.Element => {
             <li className="nav-item dropdown dropdown-user-setting">
                 <Link className="nav-link dropdown-toggle dropdown-toggle-nocaret" to="#" data-bs-toggle="dropdown">
                     <div className="user-setting d-flex align-items-center">
-                        <img src="/assets/images/avatars/avatar-1.png" className="user-img" alt="" />
+                        <img src="/assets/images/avatars/avatar-27.png" className="user-img" alt="" />
                     </div>
                 </Link>
                 <ul className="dropdown-menu dropdown-menu-end">
                     <li>
                         <Link className="dropdown-item" to="#">
                             <div className="d-flex align-items-center">
-                                <img src="/assets/images/avatars/avatar-1.png" alt="" className="rounded-circle" width="54" height="54" />
+                                <img src="/assets/images/avatars/avatar-27.png" alt="" className="rounded-circle" width="54" height="54" />
                                 <div className="ms-3">
                                     <h6 className="mb-0 dropdown-user-name">{_USER_DATA?.full_name}</h6>
                                     <small className="mb-0 dropdown-user-designation text-secondary">{_USER_DATA?.role?.name}</small>
