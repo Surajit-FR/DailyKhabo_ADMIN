@@ -101,7 +101,7 @@ const Orders = ({ header, _TOKEN }: Orders_props): JSX.Element => {
                                 <thead className="table-light">
                                     <tr>
                                         <th>Order ID</th>
-                                        <th>Status</th>
+                                        <th className="text-center">Status</th>
                                         <th>Amount</th>
                                         <th>Date & Time</th>
                                         <th>Shipping</th>
