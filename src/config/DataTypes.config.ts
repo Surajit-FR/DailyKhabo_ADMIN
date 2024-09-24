@@ -26,6 +26,8 @@ export type formValuesType = {
     couponNumber?: number;
     discount_amount?: number;
     expiry_date?: string;
+    policyName?: string;
+    policyFile?: string | null;
 };
 
 // Form value props type
@@ -50,7 +52,8 @@ export type FormValues_Props = {
         pageSize?: number;
         isExpired?: string;
         header?: CustomHeadersType;
-    }
+    },
+    resetForm?: () => void;
 };
 
 // Add category success resp type

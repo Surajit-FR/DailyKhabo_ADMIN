@@ -91,7 +91,7 @@ const Sidebar = (): JSX.Element => {
                     </li> */}
 
                     {/* Content Management */}
-                    {/* <li className="menu-label">Content Management</li>
+                    <li className="menu-label">Content Management</li>
                     <li>
                         <Link to="#" className="has-arrow">
                             <div className="parent-icon"><i className="bi bi-file-earmark-text-fill"></i>
@@ -100,13 +100,13 @@ const Sidebar = (): JSX.Element => {
                         </Link>
                         <ul>
                             <li>
-                                <Link to="/blogs-section"><i className="bi bi-circle"></i>Blogs Section</Link>
+                                <Link to="/manage-policy"><i className="bi bi-circle"></i>Manage Policy</Link>
                             </li>
-                            <li>
+                            {/* <li>
                                 <Link to="/about-section"><i className="bi bi-circle"></i>About Section</Link>
-                            </li>
+                            </li> */}
                         </ul>
-                    </li> */}
+                    </li>
 
                     {/* Others */}
                     {/* <li className="menu-label">Others</li>

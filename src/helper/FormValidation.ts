@@ -38,3 +38,20 @@ export const couponValidationSchema = Yup.object({
     discount_amount: Yup.number().required("Discount amount is required").positive("Discount amount must be a positive number"),
     expiry_date: Yup.date().required("Expiry date is required").min(new Date(), "Expiry date must be in the future")
 });
+
+// policy validation
+export const policyValidationSchema = Yup.object({
+    policyName: Yup.string().required("Policy name is required"),
+    file: Yup.mixed()
+        .required("A document file is required")
+        .test(
+            "fileType",
+            "Only .doc or .docx files are allowed",
+            (value) => {
+                if (!value) return false;
+                return value instanceof File &&
+                    (value.type === "application/msword" ||
+                        value.type === "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+            }
+        )
+});

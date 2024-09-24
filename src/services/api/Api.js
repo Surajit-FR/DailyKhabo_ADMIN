@@ -77,3 +77,5 @@ export const GETALLFEEDBACKS = (header) => API.get("/admin/api/get/testimonials"
 export const UPDATEFEEDBACK = (feedback_id, header) => API.post(`/admin/api/mark/feedback/${feedback_id}`, header);
 // Delete feedbacks
 export const DELETEFEEDBACKS = (selectedIDs, header) => API.post("/admin/api/delete/feedbacks", selectedIDs, header);
+// Add policy
+export const ADDPOLICY = (data, header) => API.post("/admin/api/add/policy", data, header);

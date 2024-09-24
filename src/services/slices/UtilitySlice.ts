@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import {
     ADDCATEGORY,
+    ADDPOLICY,
     ADDPRODUCT,
     CREATECOUPON,
     DELETECATEGORY,
@@ -290,6 +291,21 @@ export const deleteFeedbacks = createAsyncThunk("/admin/api/delete/feedbacks", a
     }
 });
 
+// addPolicy thunk
+export const addPolicy = createAsyncThunk("/admin/api/add/policy", async ({ data, resetForm, header }: FormValues_Props, { rejectWithValue }): Promise<any> => {
+    try {
+        const response = await ADDPOLICY(data, header);
+        const result: any = response?.data;
+        if (result?.success) {
+            resetForm && resetForm();
+            return result;
+        }
+    } catch (exc: any) {
+        const err: any = rejectWithValue(exc.response.data);
+        return err;
+    }
+});
+
 const UtilitySlice = createSlice({
     name: "utilitySlice",
     initialState: {
@@ -325,6 +341,9 @@ const UtilitySlice = createSlice({
         // Customer feedback data
         customer_feedback_data: [],
         del_resp: null,
+
+        // policy response data
+        policy_resp_data: null,
 
         // Common States
         utility_loading: false,
@@ -373,6 +392,10 @@ const UtilitySlice = createSlice({
 
         clearFeedbackDelResp(state) {
             state.del_resp = null;
+        },
+
+        clearAddPolicyResp(state) {
+            state.policy_resp_data = null;
         },
 
         clearError(state) {
@@ -572,7 +595,7 @@ const UtilitySlice = createSlice({
         builder.addCase(getAllCustomers.rejected, (state, { payload }) => {
             state.utility_loading = false;
             const err: any | null = payload;
-            state.del_error = err;
+            state.error = err;
         })
 
         // getAllOrders states
@@ -587,7 +610,7 @@ const UtilitySlice = createSlice({
         builder.addCase(getAllOrders.rejected, (state, { payload }) => {
             state.utility_loading = false;
             const err: any | null = payload;
-            state.del_error = err;
+            state.error = err;
         })
 
         // getInvoiceDetails states
@@ -602,7 +625,7 @@ const UtilitySlice = createSlice({
         builder.addCase(getInvoiceDetails.rejected, (state, { payload }) => {
             state.utility_loading = false;
             const err: any | null = payload;
-            state.del_error = err;
+            state.error = err;
         })
 
         // getAllFeedbacks states
@@ -617,7 +640,7 @@ const UtilitySlice = createSlice({
         builder.addCase(getAllFeedbacks.rejected, (state, { payload }) => {
             state.utility_loading = false;
             const err: any | null = payload;
-            state.del_error = err;
+            state.error = err;
         })
 
         // deleteFeedbacks states
@@ -633,6 +656,21 @@ const UtilitySlice = createSlice({
             state.utility_loading = false;
             const err: any | null = payload;
             state.del_error = err;
+        })
+
+        // addPolicy states
+        builder.addCase(addPolicy.pending, (state) => {
+            state.utility_loading = true;
+        })
+        builder.addCase(addPolicy.fulfilled, (state, { payload }) => {
+            state.utility_loading = false;
+            const policy_resp_data: any = payload;
+            state.policy_resp_data = policy_resp_data;
+        })
+        builder.addCase(addPolicy.rejected, (state, { payload }) => {
+            state.utility_loading = false;
+            const err: any | null = payload;
+            state.error = err;
         })
     }
 })
@@ -656,6 +694,8 @@ export const {
     clearInvoiceDetailsData,
 
     clearFeedbackDelResp,
+
+    clearAddPolicyResp,
 
     clearError,
 } = UtilitySlice.actions;

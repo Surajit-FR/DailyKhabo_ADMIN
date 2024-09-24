@@ -8,6 +8,7 @@ import Customers from '../pages/others/Customers';
 import Orders from '../pages/others/Orders';
 import { useMemo } from 'react';
 import CustomerFeedback from '../pages/others/CustomerFeedback';
+import ManagePolicy from '../pages/others/ManagePolicy';
 
 
 const AllRoutes = (): JSX.Element => {
@@ -19,6 +20,7 @@ const AllRoutes = (): JSX.Element => {
             Authorization: `Bearer ${_TOKEN}`
         }
     }), [_TOKEN]);
+    
     return (
         <>
             <Routes>
@@ -30,6 +32,7 @@ const AllRoutes = (): JSX.Element => {
                 <Route path='/customers' element={<Customers header={header} />} />
                 <Route path='/feedback' element={<CustomerFeedback header={header} />} />
                 <Route path='/orders' element={<Orders header={header} _TOKEN={_TOKEN} />} />
+                <Route path='/manage-policy' element={<ManagePolicy header={header} />} />
             </Routes>
         </>
     );
